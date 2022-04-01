@@ -3,18 +3,21 @@ import { makeStyles } from '@mui/styles';
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import MessagBackground from "./assets/chatbg.png"
+import { Chats } from "./components/Chats/Chats";
 
 const useStyle =  makeStyles({
   app:{
     display:"flex",
     width:"100vw",
-    height:"100vh",
+    minHeight:"100vh",
+    maxHeight:"100vh",
+    overflow:"hidden"
   },
   sideBar:{
     flex:"0.3",
     backgroundColor:""
   },
-  message:{
+  chats:{
     flex:"0.7",
     background:"#e5ddd5",
     backgroundImage: `url(${MessagBackground})`
@@ -27,8 +30,8 @@ export const App = () => {
       <Box className={classes.sideBar}>
         <Sidebar/>
       </Box>
-      <Box className={classes.message}>
-
+      <Box className={classes.chats}>
+        <Chats/>
       </Box>
     </Box>
   );

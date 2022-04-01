@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react'
+
 import {Avatar, Box, Typography} from "@mui/material"
 import { DoneAll } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
+
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     rootContainer:{
@@ -9,6 +12,9 @@ const useStyles = makeStyles({
         padding:"10px 0 0 0",
         "&:hover":{
             background: "#ebebeb"
+        },
+        "&:active":{
+            background:"#f6f6f6"
         }
     },
     childContainer:{
@@ -17,19 +23,21 @@ const useStyles = makeStyles({
         padding:'0.5rem',
         position:"relative",
         margin:"0px auto",
-        borderBottom:"0.5px gray solid",
+        borderBottom:"1px solid #e1e1e1"
         
     },
     textBox:{
-        marginLeft:"10px"
+        marginLeft:"10px",
+        flex:"1"
     },
     date:{
         position:"absolute",
         right:"2%",
+        
     }
 })
 
-export const Chat = () => {
+export const Contact = () => {
   const classes = useStyles()
   const [id,setId] = useState()
 
@@ -38,7 +46,8 @@ export const Chat = () => {
 
   },[])
   return (
-    <Box className={classes.rootContainer}>
+    <Box 
+        className={classes.rootContainer}>
         <Box
             className={classes.childContainer}
         >
@@ -49,12 +58,13 @@ export const Chat = () => {
                 className={classes.textBox}
             >
                 <Typography
-                    variant="body1"
+                    variant="body2"
                 >
                     {`${"John"} ${"Doe"}`}
                 </Typography>
                 <Typography
                     variant="caption"
+                    color="textSecondary"
                 >
                     <DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>{`${"Hi I'm new here"}`}
                 </Typography>
@@ -62,7 +72,11 @@ export const Chat = () => {
             <Box
                 className={classes.date}
             >
-                yesterday
+                <Typography
+                    variant="caption"
+                >
+                    yesterday
+                </Typography>
             </Box>
 
         </Box>

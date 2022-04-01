@@ -10,7 +10,8 @@ export const UserHeader = () => {
         height:"8vh",
         background:"#ededed",
         display:"flex",
-        alignItems:"center"
+        alignItems:"center",
+        borderLeft:"1px solid #e1e1e1"
     }}
     >
         <Avatar 
