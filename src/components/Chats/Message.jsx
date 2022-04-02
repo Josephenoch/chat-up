@@ -21,8 +21,16 @@ const useStyles = makeStyles({
     received:{
         background: "#fff",
         borderRadius: "0px 5px 5px 5px",
-        
-    }
+        float: "left",
+    },
+    messagContent:{
+        fontSize:"15px",
+    },
+    date:{
+        fontSize:"12px",
+        marginTop:"5px",
+        float:"right"
+    },
 })
 
 
@@ -33,22 +41,22 @@ export const Message = ({message}) => {
         className={`${classes.rootContainer} ${message.sentBy===0 ? classes.sent: classes.received}`}
     >
         <Typography
-            sx={{fontSize:"15px"}}
+            className={classes.messageContent}
             variant="span"
         >
             {message.content}
         </Typography>
-        <Typography
-            sx={{
-                fontSize:"15px",
-                position:"absolute",
-                right:"10px"
-            }}
-            variant="span"
-            color="textSecondary"
+        <Box
+            className={classes.date}
         >
-            {message.date.slice(0,24)}
-        </Typography>
+            <Typography
+                
+                variant="span"
+                color="textSecondary"
+            >
+                {message.date.slice(0,24)}
+            </Typography>
+        </Box>
     </Box>
   )
 }

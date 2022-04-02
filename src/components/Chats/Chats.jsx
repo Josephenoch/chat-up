@@ -37,7 +37,9 @@ export const Chats = ({user}) => {
         className={classes.root}
     >
         <Box className={classes.userHeaderBox}>
-            <UserHeader/>
+            <UserHeader
+                user={user.contacts[0]}
+            />
         </Box>
         <Box
             className={classes.messageBox}

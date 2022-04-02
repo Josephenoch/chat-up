@@ -17,7 +17,9 @@ export const Sidebar = ({user}) => {
   const classes = useStyles()
   return (
     <Box >
-        <UserHeader/>
+        <UserHeader
+          user={user}
+        />
         <SidebarSearch/>
         <Box className={classes.contactContainer}>
           {user.contacts.map(contact =>

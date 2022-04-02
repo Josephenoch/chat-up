@@ -31,7 +31,6 @@ const useStyles = makeStyles({
         marginLeft:"10px",
         width:"100%",
         flex:"1",
-        maxHeight:"100%",
         
     },
     text:{
