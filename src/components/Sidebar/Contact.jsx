@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 
 import {Avatar, Box, Typography} from "@mui/material"
 import { DoneAll } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     rootContainer:{
@@ -23,12 +23,21 @@ const useStyles = makeStyles({
         padding:'0.5rem',
         position:"relative",
         margin:"0px auto",
-        borderBottom:"1px solid #e1e1e1"
+        borderBottom:"1px solid #e1e1e1",
+        overflow:"hidden"
         
     },
     textBox:{
         marginLeft:"10px",
-        flex:"1"
+        width:"100%",
+        flex:"1",
+        maxHeight:"100%",
+        
+    },
+    text:{
+        overflow: "hidden",
+        textOverflow: "ellipsis", 
+        whiteSpace:"nowrap",
     },
     date:{
         position:"absolute",
@@ -37,14 +46,8 @@ const useStyles = makeStyles({
     }
 })
 
-export const Contact = () => {
+export const Contact = ({contact}) => {
   const classes = useStyles()
-  const [id,setId] = useState()
-
-  useEffect(()=>{
-    setId(Math.floor(Math.random()*100))
-
-  },[])
   return (
     <Box 
         className={classes.rootContainer}>
@@ -52,21 +55,32 @@ export const Contact = () => {
             className={classes.childContainer}
         >
             <Box className={classes.avatarBox}>
-                <Avatar src={`https://avatars.dicebear.com/api/human/${id}.svg`}/>
+                <Avatar src={`https://avatars.dicebear.com/api/human/${contact.id}.svg`}/>
             </Box>
             <Box
                 className={classes.textBox}
             >
                 <Typography
                     variant="body2"
+                    className={classes.text}
+                    sx={{
+                        width:"50%"
+                    }}
                 >
-                    {`${"John"} ${"Doe"}`}
+                    {`${contact.firstName} ${contact.lastName}`}
                 </Typography>
+                
                 <Typography
                     variant="caption"
                     color="textSecondary"
+                    className={classes.text}
+                    sx={{
+                        display:"block",
+                        width:"90%"
+                    }}
                 >
-                    <DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>{`${"Hi I'm new here"}`}
+                    <DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>
+                    {`${contact.messages[0].content}`}
                 </Typography>
             </Box>
             <Box
@@ -74,8 +88,12 @@ export const Contact = () => {
             >
                 <Typography
                     variant="caption"
+                    className={classes.text}
+                    sx={{
+                        width:"35%"
+                    }}
                 >
-                    yesterday
+                    {contact.messages[0].date.slice(0,24)}
                 </Typography>
             </Box>
 

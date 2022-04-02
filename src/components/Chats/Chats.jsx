@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     }
 })
 
-export const Chats = () => {
+export const Chats = ({user}) => {
   const classes = useStyles()
   return (
     <Box
@@ -42,13 +42,13 @@ export const Chats = () => {
         <Box
             className={classes.messageBox}
         >
-            <Message
-                mainUser={true}
-            />
-            <Message
-                mainUser={false}
-            />
-            
+            {user.contacts[0].messages.map((message) =>
+                    <Message
+                        key={message.id}
+                        message={message}
+                    />
+                )
+            }
             
         </Box>
         <Box className={classes.sendBox}>

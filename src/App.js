@@ -4,6 +4,7 @@ import { makeStyles } from '@mui/styles';
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import MessagBackground from "./assets/chatbg.png"
 import { Chats } from "./components/Chats/Chats";
+import {mainUser} from "./fakeData"
 
 const useStyle =  makeStyles({
   app:{
@@ -25,13 +26,18 @@ const useStyle =  makeStyles({
 }) 
 export const App = () => {
   const classes = useStyle()
+  console.log(mainUser)
   return (
     <Box className={classes.app}>
       <Box className={classes.sideBar}>
-        <Sidebar/>
+        <Sidebar
+          user={mainUser}
+        />
       </Box>
       <Box className={classes.chats}>
-        <Chats/>
+        <Chats
+          user={mainUser}
+        />
       </Box>
     </Box>
   );

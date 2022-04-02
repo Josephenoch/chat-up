@@ -8,19 +8,26 @@ import { Contact } from './Contact';
 const useStyles = makeStyles({
     contactContainer:{
         overflowY:"auto",
-        maxHeight:"86vh"
+        maxHeight:"86vh",
+        width:"30vw"
     }
 })  
 
-export const Sidebar = () => {
+export const Sidebar = ({user}) => {
   const classes = useStyles()
   return (
     <Box >
         <UserHeader/>
         <SidebarSearch/>
         <Box className={classes.contactContainer}>
-            <Contact/>
-            <Contact/>
+          {user.contacts.map(contact =>
+              <Contact
+                key={contact.id}
+                contact={contact}
+              />
+            
+            )
+          }
             
         </Box>
     </Box>

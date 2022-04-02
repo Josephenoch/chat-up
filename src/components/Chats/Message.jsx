@@ -26,17 +26,17 @@ const useStyles = makeStyles({
 })
 
 
-export const Message = ({mainUser}) => {
+export const Message = ({message}) => {
   const classes = useStyles()
   return (
     <Box
-        className={`${classes.rootContainer} ${mainUser ? classes.sent: classes.received}`}
+        className={`${classes.rootContainer} ${message.sentBy===0 ? classes.sent: classes.received}`}
     >
         <Typography
             sx={{fontSize:"15px"}}
             variant="span"
         >
-            Hi Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium mollitia quod eum sint totam odit modi temporibus odio, nostrum earum animi dolores placeat inventore doloribus ullam recusandae numquam iusto! Saepe?
+            {message.content}
         </Typography>
         <Typography
             sx={{
@@ -47,7 +47,7 @@ export const Message = ({mainUser}) => {
             variant="span"
             color="textSecondary"
         >
-            {"20/20/2002"}
+            {message.date.slice(0,24)}
         </Typography>
     </Box>
   )
