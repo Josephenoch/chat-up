@@ -1,49 +1,32 @@
-import React from 'react'
-
-import {Box, Typography} from "@mui/material"
+import {Box} from "@mui/material"
 import { makeStyles } from '@mui/styles'
 
 import {UserHeader} from "../UserHeader"
 import { Message } from './Message'
-import { EmojiEmotionsOutlined } from '@mui/icons-material'
+import { SendMessage } from "./SendMessage"
 
 const useStyles = makeStyles({
     root:{
-        overflowY:"auto",
-        maxHeight:"100vh"
+        maxHeight:"100%",
+        width:"70vw"
     },
     userHeaderBox:{
-        position:"fixed",
         width:"100%",
         zIndex:"99",
         
+        
+    },
+    messageBox:{
+        maxHeight:"85vh",
+        minHeight:"85vh",
+        overflowY:"auto",
+        
     },
     sendBox:{
-        position:"fixed ",
-        bottom:"0",
-        width:"100vw",
+        width:"100%",
         background: "#f7f7f7",
         height:"7vh",
-        
-    },
-    rootContainer:{
-        margin:"0 auto",
         display:"flex",
-        alignItems:"center",
-        
-    },
-    inputBox:{
-        flex:"1",
-        background:"white",
-        padding: "0.2rem",
-    },
-    sendInput:{
-        width:'90%',
-        border:"0px",
-        padding: "0.2rem",
-        "&:focus":{
-            outline: "none",  
-        }
     }
 })
 
@@ -57,7 +40,7 @@ export const Chats = () => {
             <UserHeader/>
         </Box>
         <Box
-            className={classes.messagesBox}
+            className={classes.messageBox}
         >
             <Message
                 mainUser={true}
@@ -65,25 +48,11 @@ export const Chats = () => {
             <Message
                 mainUser={false}
             />
-            <Message
-                mainUser={true}
-            />
-            <Message
-                mainUser={false}
-            />
+            
             
         </Box>
         <Box className={classes.sendBox}>
-            <Box
-                className={classes.rootContainer}
-            >
-                <EmojiEmotionsOutlined/>
-                <Box className={classes.inputBox}>
-                    <input
-                        className={classes.sendInput}
-                    />
-                </Box>
-            </Box>
+           <SendMessage/>
         </Box>
 
         
