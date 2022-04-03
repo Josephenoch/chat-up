@@ -1,6 +1,6 @@
-import React from 'react'
+import React,{ useState} from 'react'
 
-import {Box} from "@mui/material"
+import {Box, Button} from "@mui/material"
 import { EmojiEmotionsOutlined } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles'
 
@@ -32,7 +32,12 @@ const useStyles = makeStyles({
 })
 
 export const SendMessage = () => {
+  const [message, setMessage] = useState("")
   const classes = useStyles() 
+  const sendMessage = (e) =>{
+      e.preventDefault()
+      setMessage("")
+  }
   return (
     <Box
         className={classes.root}
@@ -43,9 +48,18 @@ export const SendMessage = () => {
             }}
         />
         <Box className={classes.inputBox}>
-            <input
-                className={classes.sendInput}
-            />
+            <form>
+                <input
+                    value={message}
+                    className={classes.sendInput}
+                    onChange={(e)=>setMessage(e.target.value)}
+                />
+                <button
+                    type="submit"
+                    onClick={sendMessage}
+                    style={{display:"none"}}
+                ></button>
+            </form>
         </Box>
     </Box>
   )
