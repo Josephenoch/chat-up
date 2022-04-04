@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     contactContainer:{
         overflowY:"auto",
         maxHeight:"86vh",
-        width:"30vw"
+        width:"100%"
     }
 })  
 

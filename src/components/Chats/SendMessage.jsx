@@ -61,7 +61,7 @@ export const SendMessage = () => {
         </IconButton>
         <Emoji
             modal={modal}
-            handleModal ={handleModal}
+            handleModal={handleModal}
             setMessage={setMessage}
         />  
         <form className={classes.inputBox}>
