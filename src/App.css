@@ -6,23 +6,7 @@
     overflow:hidden;
 }
 
-.sideBar{
-    flex:0.3;
-    max-width: 30vw;
-}
 
-.chats{
-    flex:0.7;
-    background:#e5ddd5;
-    background-image: url("assets/chatbg.png");
-}
 
-@media only screen and (max-width: 900px) {
-    .sideBar{
-        flex:1;
-        min-width: 100vw;
-    }
-    .chats{
-        display:none
-    }
-}
+
+

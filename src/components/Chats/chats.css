@@ -1,0 +1,10 @@
+.chats{
+    flex:0.7;
+    background:#e5ddd5;
+    background-image: url("../../assets/chatbg.png");
+}
+@media only screen and (max-width: 900px) {
+    .chats{
+        display:none
+    }
+}

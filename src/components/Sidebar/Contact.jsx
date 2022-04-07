@@ -4,6 +4,8 @@ import {Avatar, Box, Typography} from "@mui/material"
 import { DoneAll } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 
+import { Link } from 'react-router-dom';
+
 // import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
@@ -49,54 +51,63 @@ export const Contact = ({contact}) => {
   const classes = useStyles()
   return (
     <Box 
-        className={classes.rootContainer}>
-        <Box
-            className={classes.childContainer}
+        className={classes.rootContainer} 
         >
-            <Box className={classes.avatarBox}>
-                <Avatar src={`https://avatars.dicebear.com/api/human/${contact.id}.svg`}/>
-            </Box>
+        <Link 
+            to={`${contact.id}`}
+            style={{
+                textDecoration:"none",
+                color:"black",
+            }}
+        >
             <Box
-                className={classes.textBox}
+                className={classes.childContainer}
             >
-                <Typography
-                    variant="body2"
-                    className={classes.text}
-                    sx={{
-                        width:"50%"
-                    }}
+                <Box className={classes.avatarBox}>
+                    <Avatar src={`https://avatars.dicebear.com/api/human/${contact.id}.svg`}/>
+                </Box>
+                <Box
+                    className={classes.textBox}
                 >
-                    {`${contact.firstName} ${contact.lastName}`}
-                </Typography>
-                
-                <Typography
-                    variant="caption"
-                    color="textSecondary"
-                    className={classes.text}
-                    sx={{
-                        display:"block",
-                        width:"90%"
-                    }}
+                    <Typography
+                        variant="body2"
+                        className={classes.text}
+                        sx={{
+                            width:"50%"
+                        }}
+                    >
+                        {`${contact.firstName} ${contact.lastName}`}
+                    </Typography>
+                    
+                    <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        className={classes.text}
+                        sx={{
+                            display:"block",
+                            width:"90%"
+                        }}
+                    >
+                        <DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>
+                        {`${contact.messages[0].content}`}
+                    </Typography>
+                </Box>
+                <Box
+                    className={classes.date}
                 >
-                    <DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>
-                    {`${contact.messages[0].content}`}
-                </Typography>
-            </Box>
-            <Box
-                className={classes.date}
-            >
-                <Typography
-                    variant="caption"
-                    className={classes.text}
-                    sx={{
-                        width:"35%"
-                    }}
-                >
-                    {contact.messages[0].date.slice(0,24)}
-                </Typography>
-            </Box>
+                    <Typography
+                        variant="caption"
+                        className={classes.text}
+                        sx={{
+                            width:"35%"
+                        }}
+                    >
+                        {contact.messages[0].date.slice(0,24)}
+                    </Typography>
+                </Box>
 
-        </Box>
+            </Box>
+        </Link>
     </Box>
   )
 }

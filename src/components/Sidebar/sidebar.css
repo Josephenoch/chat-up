@@ -1,0 +1,9 @@
+.sideBar{
+    max-width: 30vw;
+}
+@media only screen and (max-width: 900px) {
+    .sideBar{
+        flex:1;
+        min-width: 100vw;
+    }
+}

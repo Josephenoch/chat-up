@@ -4,6 +4,10 @@ import { makeStyles } from '@mui/styles'
 import {UserHeader} from "../UserHeader"
 import { Message } from './Message'
 import { SendMessage } from "./SendMessage"
+import { useChats } from "../../contexts/ChatsContext"
+
+import { useParams } from 'react-router-dom'
+import "./chats.css"
 
 const useStyles = makeStyles({
     root:{
@@ -30,34 +34,44 @@ const useStyles = makeStyles({
     }
 })
 
-export const Chats = ({user}) => {
+export const Chats = () => {
   const classes = useStyles()
+  const user = useChats()
+
+  const {roomId} = useParams()
+  console.log(roomId)
+  
+  const contact =user.contacts.filter(contact => contact.id===roomId)[0]
+  console.log(contact)
+  
   return (
-    <Box
-        className={classes.root}
-    >
-        <Box className={classes.userHeaderBox}>
-            <UserHeader
-                user={user.contacts[0]}
-            />
-        </Box>
+    <Box className="chats">
         <Box
-            className={classes.messageBox}
+            className={classes.root}
         >
-            {user.contacts[0].messages.map((message) =>
-                    <Message
-                        key={message.id}
-                        message={message}
-                    />
-                )
-            }
+            <Box className={classes.userHeaderBox}>
+                <UserHeader
+                    user={contact}
+                />
+            </Box>
+            <Box
+                className={classes.messageBox}
+            >
+                {contact.messages.map((message) =>
+                        <Message
+                            key={message.id}
+                            message={message}
+                        />
+                    )
+                }
+                
+            </Box>
+            <Box className={classes.sendBox}>
+            <SendMessage/>
+            </Box>
+
             
         </Box>
-        <Box className={classes.sendBox}>
-           <SendMessage/>
-        </Box>
-
-        
     </Box>
   )
 }
