@@ -5,7 +5,6 @@ import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles({
     root:{
-        paddingLeft:"2%",
         width:"100%",
         height:"8vh",
         background:"#ededed",
@@ -23,6 +22,9 @@ export const UserHeader = ({user}) => {
     >
         <Avatar 
             src={`https://avatars.dicebear.com/api/human/${user.id}.svg`}
+            sx={{
+                marginLeft:"2%"
+            }}
         />
         <Box
             sx={{

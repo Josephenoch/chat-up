@@ -6,7 +6,7 @@ import { SidebarSearch } from './SidebarSearch';
 import { useChats } from "../../contexts/ChatsContext";
 
 import { Contact } from './Contact';
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import "./sidebar.css"
 const useStyles = makeStyles({
     contactContainer:{
@@ -19,6 +19,8 @@ const useStyles = makeStyles({
 export const Sidebar = () => {
   const user = useChats()
   const classes = useStyles()
+  const location = useLocation()
+  console.log(location.pathname)
   return (
     <>
     <Box className="sideBar">
@@ -40,7 +42,7 @@ export const Sidebar = () => {
           </Box>
       </Box>
     </Box>
-    <Outlet/>
+    {String(location.pathname).length<=6? "Hi":<Outlet/>}
     </>
   )
 }
