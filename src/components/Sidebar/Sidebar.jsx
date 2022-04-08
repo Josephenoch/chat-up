@@ -8,6 +8,7 @@ import { useChats } from "../../contexts/ChatsContext";
 import { Contact } from './Contact';
 import { Outlet, useLocation } from "react-router-dom";
 import "./sidebar.css"
+import { NoActiveChat } from "../Chats/NoActiveChat";
 const useStyles = makeStyles({
     contactContainer:{
         overflowY:"auto",
@@ -17,10 +18,8 @@ const useStyles = makeStyles({
 })  
 
 export const Sidebar = () => {
-  const user = useChats()
+  const {user} = useChats()
   const classes = useStyles()
-  const location = useLocation()
-  console.log(location.pathname)
   return (
     <>
     <Box className="sideBar">
@@ -42,7 +41,7 @@ export const Sidebar = () => {
           </Box>
       </Box>
     </Box>
-    {String(location.pathname).length<=6? "Hi":<Outlet/>}
+    <Outlet/>
     </>
   )
 }

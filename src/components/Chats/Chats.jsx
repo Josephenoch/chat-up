@@ -8,6 +8,7 @@ import { useChats } from "../../contexts/ChatsContext"
 
 import { useParams } from 'react-router-dom'
 import "./chats.css"
+import { NoActiveChat } from "./NoActiveChat"
 
 const useStyles = makeStyles({
     root:{
@@ -36,42 +37,49 @@ const useStyles = makeStyles({
 
 export const Chats = () => {
   const classes = useStyles()
-  const user = useChats()
+  const {user} = useChats()
 
   const {roomId} = useParams()
-  console.log(roomId)
   
   const contact =user.contacts.filter(contact => contact.id===roomId)[0]
-  console.log(contact)
   
-  return (
-    <Box className="chats">
-        <Box
-            className={classes.root}
-        >
-            <Box className={classes.userHeaderBox}>
-                <UserHeader
-                    user={contact}
-                />
-            </Box>
-            <Box
-                className={classes.messageBox}
-            >
-                {contact.messages.map((message) =>
-                        <Message
-                            key={message.id}
-                            message={message}
+  
+  if(contact){
+        return (
+      
+            <Box className="chats">
+                <Box
+                    className={classes.root}
+                >
+                    <Box className={classes.userHeaderBox}>
+                        <UserHeader
+                            user={contact}
                         />
-                    )
-                }
-                
-            </Box>
-            <Box className={classes.sendBox}>
-            <SendMessage/>
-            </Box>
+                    </Box>
+                    <Box
+                        className={classes.messageBox}
+                    >
+                        {contact.messages.map((message) =>
+                                <Message
+                                    key={message.id}
+                                    message={message}
+                                />
+                            )
+                        }
+                        
+                    </Box>
+                    <Box className={classes.sendBox}>
+                    <SendMessage
+                        contact={contact}
+                    />
+                    </Box>
 
-            
-        </Box>
-    </Box>
-  )
+                    
+                </Box>
+            </Box>
+        )
+    }
+    else{
+        return <NoActiveChat/>
+    }
 }

@@ -5,6 +5,8 @@ import {Box, IconButton} from "@mui/material"
 import { EmojiEmotionsOutlined } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles'
 import { Emoji } from '../Emoji'
+import { useChats } from '../../contexts/ChatsContext'
+import { useParams } from 'react-router-dom'
 
 const useStyles = makeStyles({
     root:{
@@ -33,15 +35,19 @@ const useStyles = makeStyles({
     }
 })
 
-export const SendMessage = () => {
+export const SendMessage = ({contact}) => {
   const [message, setMessage] = useState("")
   const [modal, setModal] = useState(false)
+  const {addMessage} = useChats()
   const classes = useStyles() 
   const handleModal = () => {
     setModal(!modal)
   }
   const sendMessage = (e) =>{
       e.preventDefault()
+      if(message!==""){
+          addMessage(message, contact.id)
+      }
       setMessage("")
   }
 
