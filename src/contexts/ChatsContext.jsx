@@ -14,18 +14,19 @@ export const ChatsProvider = ({children}) => {
   console.log(user)
   const addMessage=(content,contactId)=>{
     const date = new Date
-    // setUser(()=>{
-    //   const contact = user.contacts.filter((cont)=> cont.id===contactId)[0]
-    //   contact.messages.push(
-    //     {
-    //       content:content,
-    //       id:faker.datatype.uuid(),
-    //       date:String(date),
-    //       sentBy:0
-    //     }
-    //   )
-    // })
-    console.log(date)
+    const data = {
+      content:content,
+      id:faker.datatype.uuid(),
+      date:String(date),
+      sentBy:0
+    }
+    const newUser = JSON.parse(JSON.stringify(user))
+    const newContact = newUser.contacts.filter((cont)=> cont.id===contactId)[0]
+    const newUserId = newUser.contacts.indexOf(newContact)
+    newContact.messages.push(data)
+    newUser.contacts[newUserId]=newContact
+    setUser(newUser)
+ 
   }
   const value = {
     user,

@@ -1,3 +1,5 @@
+import { useRef, useEffect } from "react"
+
 import {Box} from "@mui/material"
 import { makeStyles } from '@mui/styles'
 
@@ -41,9 +43,24 @@ export const Chats = () => {
 
   const {roomId} = useParams()
   
+  const endDiv = useRef(null)
+
   const contact =user.contacts.filter(contact => contact.id===roomId)[0]
   
+  useEffect(()=>{
+    if(contact){
+        endDiv.current.scrollIntoView()
+        console.log(endDiv.current)
+    }
+  },[user])
+  useEffect(()=>{
+    if(contact){
+        endDiv.current.scrollIntoView()
+        console.log(endDiv.current)
+    }
+  })
   
+
   if(contact){
         return (
       
@@ -66,7 +83,8 @@ export const Chats = () => {
                                 />
                             )
                         }
-                        
+                         <Box sx={{float:"right", clear:"both"}} ref={endDiv}></Box>
+
                     </Box>
                     <Box className={classes.sendBox}>
                     <SendMessage
@@ -74,8 +92,8 @@ export const Chats = () => {
                     />
                     </Box>
 
-                    
                 </Box>
+                
             </Box>
         )
     }

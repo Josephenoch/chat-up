@@ -30,6 +30,7 @@ const useStyles = makeStyles({
     date:{
         fontSize:"12px",
         marginTop:"5px",
+        marginLeft:"5px",
         float:"right"
     },
 })
