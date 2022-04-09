@@ -1,10 +1,11 @@
 import React from 'react'
 
-import {Avatar, Box, Typography} from "@mui/material"
+import {Avatar, Box, Typography, Paper} from "@mui/material"
 import { DoneAll } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 
 import { Link } from 'react-router-dom';
+import { useTheme } from '@mui/styles';
 
 // import { Link } from 'react-router-dom';
 
@@ -48,16 +49,17 @@ const useStyles = makeStyles({
 })
 
 export const Contact = ({contact}) => {
+  const theme = useTheme()
   const classes = useStyles()
   return (
-    <Box 
+    <Paper 
         className={classes.rootContainer} 
         >
         <Link 
             to={`${contact.id}`}
             style={{
                 textDecoration:"none",
-                color:"black",
+                color:theme.palette.mode ==="dark" ? "white" : "black",
             }}
         >
             <Box
@@ -108,6 +110,6 @@ export const Contact = ({contact}) => {
 
             </Box>
         </Link>
-    </Box>
+    </Paper>
   )
 }

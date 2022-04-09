@@ -19,9 +19,11 @@ export const Emoji = ({modal,handleModal,setMessage}) => {
         <Picker 
             preload={true}
             onEmojiClick={
-                (e,emojiObject)=>setMessage(
+                (e,emojiObject)=>
+                setMessage(
                     prevState=>prevState
-                    ?prevState+emojiObject.emoji:emojiObject.emoji)} />
+                    ?prevState+emojiObject.emoji:emojiObject.emoji)} 
+        />
     </Modal>
   )
 }

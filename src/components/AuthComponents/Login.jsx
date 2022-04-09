@@ -52,7 +52,7 @@ export const Login = () => {
                <TextField label="Password" type="Password"/>
            </FormGroup>
            <FormGroup className={classes.formGroup}>
-               <Button variant="contained" sx={{backgroundColor:"#648746"}}>Log In</Button>
+               <Button variant="contained">Log In</Button>
            </FormGroup>
            <Typography variant='caption' sx={{marginTop:"20px"}}>
                 <Link to="signin">Forgot Password</Link>

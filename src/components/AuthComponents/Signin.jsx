@@ -55,7 +55,7 @@ export const Signin = () => {
                <TextField label="Confirm Password" type="Password"/>
            </FormGroup>
            <FormGroup className={classes.formGroup}>
-               <Button variant="contained" sx={{backgroundColor:"#648746"}}>Log In</Button>
+               <Button variant="contained">Log In</Button>
            </FormGroup>
         </Paper>
         <Typography variant='caption' sx={{marginTop:"20px"}}>
