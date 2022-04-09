@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { mainUser } from "../fakeData";
 import { faker } from '@faker-js/faker';
+import { useAuth } from "./AuthContext";
 
 
 const ChatsContext = createContext()
@@ -10,14 +10,13 @@ export const useChats =() =>{
 }
 
 export const ChatsProvider = ({children}) => {
+  const {mainUser} = useAuth()
   const [user, setUser] = useState(mainUser)
-  console.log(user)
   const addMessage=(content,contactId)=>{
-    const date = new Date
     const data = {
       content:content,
       id:faker.datatype.uuid(),
-      date:String(date),
+      date:String(new Date),
       sentBy:0
     }
     const newUser = JSON.parse(JSON.stringify(user))
