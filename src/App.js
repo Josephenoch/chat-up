@@ -8,9 +8,12 @@ import { ChatsProvider } from "./contexts/ChatsContext";
 import { Routes, Route } from "react-router-dom";
 import { useTheme } from "@mui/styles";
 import { NoActiveChat } from "./components/Chats/NoActiveChat";
-import { Login } from "./components/Chats/AuthComponents/Login";
-import { Signin } from "./components/Chats/AuthComponents/Signin";
+import { Login } from "./components/AuthComponents/Login";
+import { Signin } from "./components/AuthComponents/Signin";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ProtectedRoute } from "./Routes/ProtectedRoute";
+import { PublicRoute } from "./Routes/PublicRoute";
+
 
 
 
@@ -21,11 +24,31 @@ export const App = () => {
       <AuthProvider>
         <ChatsProvider>
           <Routes>
-            <Route path="login" element={<Login/>}/>
-            <Route path="signin" element={<Signin/>}/>
-            <Route path="chats" element={<Sidebar/>}>
-              <Route path="" element={<NoActiveChat/>}/>
-              <Route path=":roomId" element={<Chats/>}/>
+            <Route path="login" element={
+              <PublicRoute>
+                <Login/>
+              </PublicRoute>
+            }/>
+            <Route path="signin" element={
+              <PublicRoute>
+                <Signin/>
+            </PublicRoute>
+            }/>
+            <Route path="chats" element={
+              <ProtectedRoute >
+                <Sidebar/>
+              </ProtectedRoute>}
+              >
+                <Route path="" element={
+                  <ProtectedRoute >
+                    <NoActiveChat/>
+                  </ProtectedRoute>
+                }/>
+                <Route path=":roomId" element={
+                  <ProtectedRoute >
+                    <Chats/>
+                  </ProtectedRoute> 
+                }/>
             </Route>
           </Routes>
         </ChatsProvider>
