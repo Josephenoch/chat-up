@@ -1,51 +1,79 @@
 import React from 'react'
-import { Paper, Box, Typography } from '@mui/material'
-import { useTheme } from '@mui/styles'
+
+import { Paper, Box, Typography,} from '@mui/material'
+import { useTheme, makeStyles } from '@mui/styles'
+
+import { LandingHeader } from './LandingHeader'
+import { LandingLeft } from './LandingLeft'
+
+import LandingSvg from "../../assets/landingPage.svg"
+
+
 export const LandingPage = () => {
   const theme = useTheme()
+  const useStyles = makeStyles({
+    root:{
+        minWidth:"100vw",
+        minHeight:"100vh",
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center",
+        backgroundColor:theme.palette.primary.alt,
+        
+    },
+    container:{
+        width:"80%",
+        height:"90%"
+    },
+    content:{
+        margin:"70px",
+        display:"flex",
+        alignItems:"center",
+        position:"relative"
+    }
+})
+  const classes = useStyles()
   return (
     <Box
-        sx={{
-            minWidth:"100vw",
-            minHeight:"100vh",
-            display:"flex",
-            alignItems:"center",
-            justifyContent:"center",
-            backgroundColor:theme.palette.primary.alt,
-            
-        }}
+        className={classes.root}
     >
         <Paper
-            sx={{
-                width:"80%",
-                height:"90%"
-            }}
+            className={classes.container}
         >
             <Box
                 sx={{
-                    width:"40%"
+                    width:"100%",
                 }}
             >
-                <Box>
-                    <Typography variant="h5" color="textSecondary">
-                        Your Logo
-                    </Typography>
+                <Box
+                    className={classes.content}
+                >
+                    <LandingHeader/>
+                    
                 </Box>
-                <Box>
-                    <Box
+                <Box
+                    className={classes.content}
+                >
+                    <Box 
                         sx={{
-                            width:"60%"
+                            width:"45%"
                         }}
                     >
-                        <Typography variant="h4">
-                            Creative Team
-                        </Typography>
+                        <LandingLeft/>
                     </Box>
-                    <Typography>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem repudiandae laudantium magni repellendus! Nam non consequatur consequuntur illo consectetur distinctio similique odio. Iure fugiat dolor sunt corrupti accusamus tempore deserunt.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem repudiandae laudantium magni repellendus! Nam non consequatur consequuntur illo consectetur distinctio similique odio. Iure fugiat dolor sunt corrupti accusamus tempore deserunt.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem repudiandae laudantium magni repellendus! Nam non consequatur consequuntur illo consectetur distinctio similique odio. Iure fugiat dolor sunt corrupti accusamus tempore deserunt.
-                    </Typography>
+                    <Box 
+                        sx={{
+                            width:"50%",
+                            marginLeft:"10%"
+                        }}
+                    >
+                        <img 
+                            src={LandingSvg} 
+                            style={{
+                                width:"500px"
+                            }}
+                        />
+                    </Box>
                 </Box>
             </Box>
 
