@@ -9,7 +9,7 @@ import { Routes, Route } from "react-router-dom";
 import { ThemeProvider,createTheme  } from "@mui/material/styles";
 import { NoActiveChat } from "./components/Chats/NoActiveChat";
 import { Login } from "./components/AuthPages/Login";
-import { Signin } from "./components/AuthPages/Signin";
+import { Signup } from "./components/AuthPages/Signup";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./Routes/ProtectedRoute";
 import { PublicRoute } from "./Routes/PublicRoute";
@@ -41,9 +41,9 @@ export const App = () => {
                   <Login/>
                 </PublicRoute>
               }/>
-              <Route path="signin" element={
+              <Route path="signup" element={
                 <PublicRoute>
-                  <Signin/>
+                  <Signup/>
               </PublicRoute>
               }/>
               <Route path="chats" element={

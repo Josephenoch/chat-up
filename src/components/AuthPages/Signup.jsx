@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     }
 })
 
-export const Signin = () => {
+export const Signup = () => {
   const classes = useStyles()
   return (
     <Box

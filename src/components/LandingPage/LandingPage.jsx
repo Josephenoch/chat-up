@@ -5,8 +5,8 @@ import { useTheme, makeStyles } from '@mui/styles'
 
 import { LandingHeader } from './LandingHeader'
 import { LandingLeft } from './LandingLeft'
+import { LandingRight } from './LandingRight'
 
-import LandingSvg from "../../assets/landingPage.svg"
 
 
 export const LandingPage = () => {
@@ -27,6 +27,7 @@ export const LandingPage = () => {
     },
     content:{
         margin:"70px",
+        marginTop:"40px",
         display:"flex",
         alignItems:"center",
         position:"relative"
@@ -56,7 +57,8 @@ export const LandingPage = () => {
                 >
                     <Box 
                         sx={{
-                            width:"45%"
+                            width:"45%",
+                            clear:"both"
                         }}
                     >
                         <LandingLeft/>
@@ -64,15 +66,11 @@ export const LandingPage = () => {
                     <Box 
                         sx={{
                             width:"50%",
-                            marginLeft:"10%"
+                            marginLeft:"10%",
+                            position:"relative"
                         }}
                     >
-                        <img 
-                            src={LandingSvg} 
-                            style={{
-                                width:"500px"
-                            }}
-                        />
+                       <LandingRight/>
                     </Box>
                 </Box>
             </Box>
