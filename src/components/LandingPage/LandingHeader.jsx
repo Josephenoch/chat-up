@@ -29,23 +29,7 @@ export const LandingHeader = () => {
         </Typography>
         <Box
             className={classes.linkContainer}
-        >
-            <Typography 
-                variant="string" 
-                color="textSecondary"
-            >
-                <Link 
-                    to="signup" 
-                    className={classes.links}
-                >Sign Up</Link>
-            </Typography>
-            <Typography variant="string" color="textSecondary">
-                <Link 
-                    to="login" 
-                    className={classes.links}
-                >Log In</Link>
-            </Typography>
-            
+        >    
             <Typography variant="string" color="textSecondary">
                 <a 
                     href="https://github.com/josephenoch" 
@@ -53,7 +37,7 @@ export const LandingHeader = () => {
                         className={classes.links}
                         rel="noreferrer"
                 >
-                    About
+                    <Button variant="contained">About</Button>
                 </a>
             </Typography>
         </Box>

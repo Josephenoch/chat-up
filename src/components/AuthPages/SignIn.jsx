@@ -1,8 +1,7 @@
-import { Box, Button, FormGroup, Paper, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, FormGroup, Paper, Typography } from '@mui/material'
 import React from 'react'
 
 import { makeStyles } from '@mui/styles'
-import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles({
     root:{
@@ -17,7 +16,6 @@ const useStyles = makeStyles({
     formContainer:{
         minWidth:"400px",
         maxWidth:"90vw",
-        height:"480px",
         background:"white",
         padding:"20px",
         display:"flex",
@@ -30,7 +28,8 @@ const useStyles = makeStyles({
     }
 })
 
-export const Signup = () => {
+export const SignIn = () => {
+  const error = true
   const classes = useStyles()
   return (
     <Box
@@ -43,24 +42,18 @@ export const Signup = () => {
                 variant="h3"
                 sx={{marginTop:"30px"}}
             >
-                Log In
+                Sign In
             </Typography>
            <FormGroup className={classes.formGroup}>
-               <TextField label="Email" type="email"/>
+               <Button variant="contained">Sign In with Google</Button>
            </FormGroup>
            <FormGroup className={classes.formGroup}>
-               <TextField label="Password" type="Password"/>
+               <Button variant="contained">Sign In with Twitter</Button>
            </FormGroup>
-           <FormGroup className={classes.formGroup}>
-               <TextField label="Confirm Password" type="Password"/>
-           </FormGroup>
-           <FormGroup className={classes.formGroup}>
-               <Button variant="contained">Log In</Button>
-           </FormGroup>
+           <Box className={classes.formGroup}>
+               {error&&<Alert severity="error"> Wrong!</Alert>}
+           </Box>
         </Paper>
-        <Typography variant='caption' sx={{marginTop:"20px"}}>
-            Already have an account? <Link to="signin">Log in</Link>
-        </Typography>
     </Box>
   )
 }

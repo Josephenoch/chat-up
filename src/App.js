@@ -8,8 +8,7 @@ import { ChatsProvider } from "./contexts/ChatsContext";
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider,createTheme  } from "@mui/material/styles";
 import { NoActiveChat } from "./components/Chats/NoActiveChat";
-import { Login } from "./components/AuthPages/Login";
-import { Signup } from "./components/AuthPages/Signup";
+import { SignIn } from "./components/AuthPages/SignIn";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./Routes/ProtectedRoute";
 import { PublicRoute } from "./Routes/PublicRoute";
@@ -36,14 +35,9 @@ export const App = () => {
           <ChatsProvider>
             <Routes>
               <Route index element={<LandingPage/>}/>
-              <Route path="login" element={
+              <Route path="signin" element={
                 <PublicRoute>
-                  <Login/>
-                </PublicRoute>
-              }/>
-              <Route path="signup" element={
-                <PublicRoute>
-                  <Signup/>
+                  <SignIn/>
               </PublicRoute>
               }/>
               <Route path="chats" element={
@@ -52,14 +46,10 @@ export const App = () => {
                 </ProtectedRoute>}
                 >
                   <Route path="" element={
-                    <ProtectedRoute >
                       <NoActiveChat/>
-                    </ProtectedRoute>
                   }/>
                   <Route path=":roomId" element={
-                    <ProtectedRoute >
                       <Chats/>
-                    </ProtectedRoute> 
                   }/>
               </Route>
             </Routes>

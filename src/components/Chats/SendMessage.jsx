@@ -37,10 +37,15 @@ const useStyles = makeStyles({
 
 export const SendMessage = ({contact}) => {
   const [message, setMessage] = useState("")
+  const [anchorEl, setAnchorEl] = useState(null)
+
   const [modal, setModal] = useState(false)
   const {addMessage} = useChats()
   const classes = useStyles() 
-  const handleModal = () => {
+  const handleModal = (e) => {
+    setAnchorEl(e.currentTarget)
+    console.log(e.currentTarget)
+
     setModal(!modal)
   }
   const sendMessage = (e) =>{
@@ -56,7 +61,7 @@ export const SendMessage = ({contact}) => {
         className={classes.root}
     >
         <IconButton
-            onClick={handleModal}
+            onClick={(e)=>handleModal(e)}
         >
             <EmojiEmotionsOutlined
                 
@@ -69,6 +74,7 @@ export const SendMessage = ({contact}) => {
             modal={modal}
             handleModal={handleModal}
             setMessage={setMessage}
+            anchorEl={anchorEl}
         />  
         <form className={classes.inputBox}>
             <input

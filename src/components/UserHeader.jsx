@@ -1,8 +1,10 @@
-import React from 'react'
+import React,{useState} from 'react'
 
 import {Box, Avatar, Typography, Grid, IconButton} from "@mui/material"
 import { makeStyles } from '@mui/styles'
 import { Add, MoreHoriz } from '@mui/icons-material'
+
+import {MainUserMenu} from "./MainUserMenu"
 
 const useStyles = makeStyles({
     root:{
@@ -18,6 +20,13 @@ const useStyles = makeStyles({
 
 export const UserHeader = ({user}) => {
   const classes = useStyles()
+  const [open, setOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(false)
+
+  const handleMenu = (event) => {
+      setAnchorEl(event.currentTarget)
+      setOpen(!open)
+  }
   return (
     <Box
         className={classes.root}
@@ -50,10 +59,18 @@ export const UserHeader = ({user}) => {
         >
             {
                 user.mainUser&&
-                <IconButton>
+                <IconButton
+                    onClick={(e)=>handleMenu(e)}
+                >
                     <Add/>
                 </IconButton>
+                
             }
+            <MainUserMenu
+                    open={open}
+                    handleMenu={handleMenu}
+                    anchorEl={anchorEl}
+            />
             <IconButton>
                 <MoreHoriz/>
             </IconButton>

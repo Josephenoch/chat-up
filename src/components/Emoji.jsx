@@ -1,21 +1,23 @@
-import { Modal } from '@mui/material'
+import { Menu, MenuList } from '@mui/material'
 import React from 'react'
 import Picker from "emoji-picker-react"
 
-export const Emoji = ({modal,handleModal,setMessage}) => {
+export const Emoji = ({modal,handleModal,setMessage,anchorEl}) => {
   return (
-    <Modal
+    <Menu
         open={modal}
         onClose={handleModal}
-        sx={{
-            position: 'fixed',
-            top: "59%",
-            left: '35%',
-            transform: 'translate(-50%, -50%)',
-            width: "10vw",
-            height:"20vh",
+        anchorEl={anchorEl}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
         }}
-    >
+        transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+        }}
+    >  
         <Picker 
             preload={true}
             onEmojiClick={
@@ -24,6 +26,6 @@ export const Emoji = ({modal,handleModal,setMessage}) => {
                     prevState=>prevState
                     ?prevState+emojiObject.emoji:emojiObject.emoji)} 
         />
-    </Modal>
+    </Menu>
   )
 }
