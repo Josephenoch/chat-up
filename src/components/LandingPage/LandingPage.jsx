@@ -40,6 +40,7 @@ export const LandingPage = () => {
     >
         <Paper
             className={classes.container}
+            elevation={24}
         >
             <Box
                 sx={{
