@@ -4,7 +4,9 @@ import {Box, Avatar, Typography, IconButton} from "@mui/material"
 import { makeStyles } from '@mui/styles'
 import { Add, MoreHoriz } from '@mui/icons-material'
 
-import {MainUserMenu} from "./MainUserMenu"
+import {MainUserMenu} from "./MainUserControls/MainUserMenu"
+import { AddContact } from './MainUserControls/AddContact'
+
 
 const useStyles = makeStyles({
     root:{
@@ -22,7 +24,11 @@ export const UserHeader = ({user}) => {
   const classes = useStyles()
   const [menu, setMenu] = useState(false)
   const [anchorEl, setAnchorEl] = useState(false)
-
+  const [addCntctModal, setAddCntctModal] = useState(false)
+  const handleAddCntctModal = () => {
+    closeMenu()
+    setAddCntctModal(!addCntctModal)
+  }
   const openMenu = (e) => {
       setAnchorEl(e.currentTarget)
       setMenu(true)
@@ -63,7 +69,7 @@ export const UserHeader = ({user}) => {
             {
                 user.mainUser&&
                 <IconButton
-                    onClick={()=>console.log("hello")}
+                    onClick={handleAddCntctModal}
                 >
                     <Add/>
                 </IconButton>
@@ -78,6 +84,10 @@ export const UserHeader = ({user}) => {
                 <MoreHoriz/>
             </IconButton>
         </Box>
+        <AddContact
+            addCntctModal={addCntctModal}
+            handleAddCntctModal={handleAddCntctModal}
+        />
     </Box>
   )
 }
