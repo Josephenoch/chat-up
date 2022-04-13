@@ -78,28 +78,29 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
           {invites.map(invite=>
               <Box 
                 className={classes.inviteBox}
+                key={invite.id}
               >
-              <Avatar src={`https://avatars.dicebear.com/api/human/${invite.id}.svg`}/>
-              <Box sx={{ marginLeft:"10px", width:"60%" }}>
-                  <Typography variant="body2" color="primary">{invite.email.toLowerCase()}</Typography>
-                  <Typography variant="caption" color="textSecondary">{invite.name}</Typography>
-              </Box>
-              <Button 
-                  variant="contained" 
-                  size="small" 
-                  sx={{marginRight:"10px"}}
-                  onClick={()=>handleInvite(invite.id)}
-              >
-                  Accept
-              </Button>
-              <Button 
-                  color="secondary" 
-                  size="small" 
-                  variant="outlined"
-                  onClick={()=>handleInvite(invite.id)}
-              >
-                  Reject
-              </Button>
+                <Avatar src={`https://avatars.dicebear.com/api/human/${invite.id}.svg`}/>
+                <Box sx={{ marginLeft:"10px", width:"60%" }}>
+                    <Typography variant="body2" color="primary">{invite.email.toLowerCase()}</Typography>
+                    <Typography variant="caption" color="textSecondary">{invite.name}</Typography>
+                </Box>
+                <Button 
+                    variant="contained" 
+                    size="small" 
+                    sx={{marginRight:"10px"}}
+                    onClick={()=>handleInvite(invite.id)}
+                >
+                    Accept
+                </Button>
+                <Button 
+                    color="secondary" 
+                    size="small" 
+                    variant="outlined"
+                    onClick={()=>handleInvite(invite.id)}
+                >
+                    Reject
+                </Button>
               </Box>
           )}  
         </Paper>

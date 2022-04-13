@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {Avatar, Box, Typography, Paper} from "@mui/material"
 import { DoneAll } from '@mui/icons-material';
@@ -6,6 +6,9 @@ import { makeStyles } from '@mui/styles';
 
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/styles';
+
+import { doc, getDoc, setDoc, collection, getDocs } from "firebase/firestore"; 
+
 
 // import { Link } from 'react-router-dom';
 
@@ -48,16 +51,23 @@ const useStyles = makeStyles({
     }
 })
 
-export const Contact = ({contact}) => {
+export const Contact = ({contact,id}) => {
+  const [data, setData] = useState(null)
   const theme = useTheme()
   const classes = useStyles()
-  console.log(contact)
+
+  useEffect( async () => {
+    getDoc(doc(contact.userID))
+    .then(dat => setData(dat))
+  }, [])
+  
+  console.log(data.data())
   return (
     <Paper 
         className={classes.rootContainer} 
         >
         <Link 
-            to={`${contact.userID}`}
+            to={`${id}`}
             style={{
                 textDecoration:"none",
                 color:theme.palette.mode ==="dark" ? "white" : "black",

@@ -11,6 +11,7 @@ import { useChats } from "../../contexts/ChatsContext"
 import { useParams } from 'react-router-dom'
 import "./chats.css"
 import { NoActiveChat } from "./NoActiveChat"
+import { useAuth } from "../../contexts/AuthContext"
 
 const useStyles = makeStyles({
     root:{
@@ -40,12 +41,13 @@ const useStyles = makeStyles({
 export const Chats = () => {
   const classes = useStyles()
   const {user} = useChats()
-
+  const {contacts} = useAuth()
   const {roomId} = useParams()
   
   const endDiv = useRef(null)
 
-  const contact =user.contacts.filter(contact => contact.id===roomId)[0]
+  const contact =contacts.filter(contact => contact.id===roomId)[0]
+
   
   useEffect(()=>{
     if(contact){

@@ -9,6 +9,7 @@ import { Contact } from './Contact';
 import { Outlet, useLocation } from "react-router-dom";
 import "./sidebar.css"
 import { NoActiveChat } from "../Chats/NoActiveChat";
+import { useAuth } from "../../contexts/AuthContext";
 const useStyles = makeStyles({
     contactContainer:{
         overflowY:"auto",
@@ -18,7 +19,10 @@ const useStyles = makeStyles({
 })  
 
 export const Sidebar = () => {
+  const cnt = []
   const {user} = useChats()
+  const {contacts} = useAuth()
+  console.log(contacts)
   const classes = useStyles()
   return (
     <>
@@ -30,12 +34,13 @@ export const Sidebar = () => {
           />
           <SidebarSearch/>
           <Box className={classes.contactContainer}>
-            {user.contacts.map(contact =>
-                <Contact
-                  key={contact.id}
-                  contact={contact}
-                />
-              
+            {contacts.forEach(contact =>
+                // <Contact
+                //   key={contact.id}
+                //   id={contact.id}
+                //   contact={contact.data()}
+                // />
+                console.log(contact.data())
               )
             }
               

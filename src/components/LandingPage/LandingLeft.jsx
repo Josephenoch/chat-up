@@ -54,7 +54,7 @@ export const LandingLeft = () => {
                 marginTop:"20px"
             }}
             component={Link}
-            to="signup"
+            to="signin"
 
         >
             Get Started 
