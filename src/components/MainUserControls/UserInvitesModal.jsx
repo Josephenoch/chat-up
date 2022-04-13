@@ -3,6 +3,7 @@ import React,{useState} from 'react'
 import {Modal, Box, Paper, Typography, Avatar, Button, IconButton} from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { CancelOutlined } from '@mui/icons-material'
+import { useAuth } from '../../contexts/AuthContext'
 
 const useStyles = makeStyles({
   modalContainer:{
@@ -31,27 +32,7 @@ const useStyles = makeStyles({
 })
 
 export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
-  const [invites, setInvites] = useState([
-    {
-      name:"Chukwuebuka Danladi",
-      email:"DanChuks@gmail.com",
-      id:1
-    },
-    {
-      name:"Nasir Ugochukwu",
-      email:"NasUgochuks@gmail.com",
-      id:2
-    },
-    {
-      name:"Adewale Orsar",
-      email:"sarAdewale@gmail.com",
-      id:3
-    }
-  ])
-  const handleInvite = (id) =>{
-    const newArray = invites.filter(invite=>invite.id !== id)
-    setInvites(newArray)
-  }
+  const {receivedInvites} = useAuth()
   const classes = useStyles()
   return (
     <Modal
@@ -75,21 +56,21 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
               Review Invites
           </Typography>
           
-          {invites.map(invite=>
+          {receivedInvites.map(invite=>
               <Box 
                 className={classes.inviteBox}
                 key={invite.id}
               >
-                <Avatar src={`https://avatars.dicebear.com/api/human/${invite.id}.svg`}/>
+                <Avatar src={invite.photoURL}/>
                 <Box sx={{ marginLeft:"10px", width:"60%" }}>
-                    <Typography variant="body2" color="primary">{invite.email.toLowerCase()}</Typography>
-                    <Typography variant="caption" color="textSecondary">{invite.name}</Typography>
+                    <Typography variant="body2" color="primary">{invite.sendersEmail.toLowerCase()}</Typography>
+                    <Typography variant="caption" color="textSecondary">{invite.sendersDisplayName}</Typography>
                 </Box>
                 <Button 
                     variant="contained" 
                     size="small" 
                     sx={{marginRight:"10px"}}
-                    onClick={()=>handleInvite(invite.id)}
+                    // onClick={()=>handleInvite(invite.id)}
                 >
                     Accept
                 </Button>
@@ -97,7 +78,7 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
                     color="secondary" 
                     size="small" 
                     variant="outlined"
-                    onClick={()=>handleInvite(invite.id)}
+                    // onClick={()=>handleInvite(invite.id)}
                 >
                     Reject
                 </Button>

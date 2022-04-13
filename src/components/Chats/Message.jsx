@@ -40,7 +40,7 @@ export const Message = ({message}) => {
   const classes = useStyles()
   return (
     <Box
-        className={`${classes.rootContainer} ${message.sentBy===0 ? classes.sent: classes.received}`}
+        className={`${classes.rootContainer} ${message.sentByMainUser ? classes.sent: classes.received}`}
     >
         <Typography
             className={classes.messageContent}
@@ -56,7 +56,7 @@ export const Message = ({message}) => {
                 variant="span"
                 color="textSecondary"
             >
-                {message.date.slice(0,24)}
+                {String(message.timeStamp).slice(0,24)}
             </Typography>
         </Box>
     </Box>

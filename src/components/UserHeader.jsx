@@ -80,7 +80,7 @@ export const UserHeader = ({user,mainUser}) => {
                     closeMenu={closeMenu}
                     anchorEl={anchorEl}
             />
-            <IconButton onClick={user.mainUser?(e)=>openMenu(e):null}>
+            <IconButton onClick={mainUser?(e)=>openMenu(e):null}>
                 <MoreHoriz/>
             </IconButton>
         </Box>

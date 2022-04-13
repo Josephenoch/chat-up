@@ -19,7 +19,6 @@ const useStyles = makeStyles({
 })  
 
 export const Sidebar = () => {
-  const cnt = []
   const {user} = useChats()
   const {contacts} = useAuth()
   console.log(contacts)
@@ -34,13 +33,12 @@ export const Sidebar = () => {
           />
           <SidebarSearch/>
           <Box className={classes.contactContainer}>
-            {contacts.forEach(contact =>
-                // <Contact
-                //   key={contact.id}
-                //   id={contact.id}
-                //   contact={contact.data()}
-                // />
-                console.log(contact.data())
+            {contacts.map(contact =>
+                <Contact
+                  key={contact.id}
+                  contact={contact}
+                />
+                // console.log(contact.data)
               )
             }
               
