@@ -3,6 +3,7 @@ import React from 'react'
 
 import { makeStyles } from '@mui/styles'
 
+import {useAuth} from "../../contexts/AuthContext"
 const useStyles = makeStyles({
     root:{
         width:"100vw",
@@ -29,6 +30,7 @@ const useStyles = makeStyles({
 })
 
 export const SignIn = () => {
+  const {signIn} = useAuth()
   const error = true
   const classes = useStyles()
   return (
@@ -45,7 +47,7 @@ export const SignIn = () => {
                 Sign In
             </Typography>
            <FormGroup className={classes.formGroup}>
-               <Button variant="contained">Sign In with Google</Button>
+               <Button onClick={signIn} variant="contained">Sign In with Google</Button>
            </FormGroup>
            <FormGroup className={classes.formGroup}>
                <Button variant="contained">Sign In with Twitter</Button>

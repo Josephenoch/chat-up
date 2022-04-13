@@ -24,7 +24,8 @@ const useStyles = makeStyles({
 export const AddContact = ({addCntctModal, handleAddCntctModal}) => {
   const classes = useStyles()
   const [email, setEmail] = useState()
-  const handleSubmit = () =>{
+  const handleSubmit = (e) =>{
+      e.preventDefault()
       setEmail("")
   }
   return (
@@ -36,23 +37,27 @@ export const AddContact = ({addCntctModal, handleAddCntctModal}) => {
             <Typography variant="h5" sx={{marginBottom:"20px"}} >
                 Add Contact
             </Typography>
-            <FormGroup sx={{width:"100%"}}>
-                <TextField
-                    fullWidth
-                    type="email"
-                    label="Enter Email"
-                    value={email}
-                    onChange={e=>setEmail(e.target.value)}
-                    InputProps={{
-                        endAdornment: 
-                            <Button
-                                onClick={handleSubmit}
-                            >
-                            Add
-                            </Button>
-                        }}
-                />
-            </FormGroup>
+            <form onSubmit={handleSubmit}style={{width:"100%"}}>
+                <FormGroup >
+                    <TextField
+                        fullWidth
+                        type="email"
+                        label="Enter Email"
+                        required
+                        value={email}
+                        onChange={e=>setEmail(e.target.value)}
+                        InputProps={{
+                            endAdornment: 
+                                <Button
+                                    type="submit"
+                                    variant="outlined"
+                                >
+                                Add
+                                </Button>
+                            }}
+                    />
+                </FormGroup>
+            </form>
 
         </Paper>
     </Modal>
