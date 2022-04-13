@@ -17,10 +17,8 @@ const contact = (mainUser=false, contacts) => {
     }
     return{
         id:faker.datatype.uuid(),
-        firstName:firstName,
-        lastName:lastName,
+        displayName:`${firstName} ${LastName}`,
         email:faker.internet.email(firstName,lastName, "gmail.com"),
-        mainUser:mainUser,
         contacts: mainUser? contacts:null,
         messages:messages
     }

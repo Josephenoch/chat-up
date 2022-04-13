@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { faker } from '@faker-js/faker';
 import { useAuth } from "./AuthContext";
 
@@ -12,6 +12,9 @@ export const useChats =() =>{
 export const ChatsProvider = ({children}) => {
   const {mainUser} = useAuth()
   const [user, setUser] = useState(mainUser)
+  useEffect(()=>{
+    setUser(mainUser)
+  },[mainUser])
   const addMessage=(content,contactId)=>{
     const data = {
       content:content,

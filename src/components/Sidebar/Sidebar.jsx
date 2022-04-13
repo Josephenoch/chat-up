@@ -26,6 +26,7 @@ export const Sidebar = () => {
       <Box >
           <UserHeader
             user={user}
+            mainUser={true}
           />
           <SidebarSearch/>
           <Box className={classes.contactContainer}>

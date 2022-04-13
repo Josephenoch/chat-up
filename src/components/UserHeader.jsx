@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     }
 })
 
-export const UserHeader = ({user}) => {
+export const UserHeader = ({user,mainUser}) => {
   const classes = useStyles()
   const [menu, setMenu] = useState(false)
   const [anchorEl, setAnchorEl] = useState(false)
@@ -42,7 +42,7 @@ export const UserHeader = ({user}) => {
     >
     
         <Avatar 
-            src={`https://avatars.dicebear.com/api/human/${user.id}.svg`}
+            src={user.photoURL}
             sx={{
                 marginLeft:"2%"
             }}
@@ -56,7 +56,7 @@ export const UserHeader = ({user}) => {
             <Typography
                 variant="body2"
             >
-                {`${user.firstName} ${user.lastName}`}
+                {`${user.displayName}`}
             </Typography>
         </Box>
         
@@ -67,7 +67,7 @@ export const UserHeader = ({user}) => {
             }}
         >
             {
-                user.mainUser&&
+                mainUser&&
                 <IconButton
                     onClick={handleAddCntctModal}
                 >

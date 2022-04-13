@@ -51,12 +51,13 @@ const useStyles = makeStyles({
 export const Contact = ({contact}) => {
   const theme = useTheme()
   const classes = useStyles()
+  console.log(contact)
   return (
     <Paper 
         className={classes.rootContainer} 
         >
         <Link 
-            to={`${contact.id}`}
+            to={`${contact.userID}`}
             style={{
                 textDecoration:"none",
                 color:theme.palette.mode ==="dark" ? "white" : "black",
@@ -66,7 +67,7 @@ export const Contact = ({contact}) => {
                 className={classes.childContainer}
             >
                 <Box className={classes.avatarBox}>
-                    <Avatar src={`https://avatars.dicebear.com/api/human/${contact.id}.svg`}/>
+                    <Avatar src={`https://avatars.dicebear.com/api/human/${contact.userID}.svg`}/>
                 </Box>
                 <Box
                     className={classes.textBox}
@@ -78,7 +79,7 @@ export const Contact = ({contact}) => {
                             width:"50%"
                         }}
                     >
-                        {`${contact.firstName} ${contact.lastName}`}
+                        {`${contact.displayName}`}
                     </Typography>
                     
                     <Typography
@@ -104,7 +105,7 @@ export const Contact = ({contact}) => {
                             width:"35%"
                         }}
                     >
-                        {contact.messages[0].date.slice(0,24)}
+                        {String(contact.messages[0].date).slice(0,24)}
                     </Typography>
                 </Box>
 
