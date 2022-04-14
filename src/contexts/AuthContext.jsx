@@ -81,35 +81,25 @@ export const AuthProvider = ({children}) => {
   }
   
   const sendMessage = async (message,contact) => {
-    const cnt =  await getDoc(doc(db, `user/${mainUser.email}/contacts`, contact.id))
-    const oldMessages = cnt.data().messages
-    const sentBy = await query(collection(db, `user/${contact.data.sender}/contacts`), where("sender","==",mainUser.email), limit(1))
-    onSnapshot(sentBy,sender=>{
-      console.log(sender.data())
-      sender.forEach(snd=>{
-        setSendEr({
-          newMessage:message,
-          sender:contact.data.sender,
-          oldMessages:snd.data().messages,
-          id:snd.id
-        })
-        break
-        console.log(snd.data())
-      })
-    })
-
-    await updateDoc(doc(db, `user/${mainUser.email}/contacts`,contact.id),{
-      messages:[...oldMessages,message]
-    })
-  }
-  useEffect(()=>{
-    console.log(sendEr)
-    if(sendEr){
-      updateDoc(doc(collection(db, `user/${sendEr.sender}/contacts`),sendEr.id),{
-        messages:[...sendEr.oldMessages,{...sendEr.newMessage, sentByMainUser:false}]
-      })
+    const sentToData = await getDoc(doc(db, `user/${mainUser.email}/contacts`, contact.id))
+    const sentByData = await getDocs(query(collection(db, `user/${contact.data.sender}/contacts`), where("sender","==",mainUser.email), limit(1)))
+    const sentTo = {
+      data:sentToData.data(),
+      id:sentToData.id
     }
-  },[sendEr])
+    const sentBy ={
+      data:sentByData.docs[0].data(),
+      id:sentByData.docs[0].id
+    }
+    console.log(sentTo.data.sender,sentTo.id,contact.id)
+    await updateDoc(doc(db, `user/${mainUser.email}/contacts`,contact.id),{
+      messages:[...sentTo.data.messages,message]
+    })
+    await updateDoc(doc(db, `user/${sentTo.data.sender}/contacts`,sentBy.id),{
+      messages:[...sentBy.data.messages,{...message, sentByMainUser:false}]
+  })
+}
+  
   const value = {
       signIn,
       mainUser,
