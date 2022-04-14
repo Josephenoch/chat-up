@@ -56,7 +56,8 @@ export const Message = ({message}) => {
                 variant="span"
                 color="textSecondary"
             >
-                {String(message.timeStamp).slice(0,24)}
+                {new Date(message.timeStamp?.toDate()).toUTCString()}
+
             </Typography>
         </Box>
     </Box>

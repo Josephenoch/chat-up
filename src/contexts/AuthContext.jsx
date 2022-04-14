@@ -33,7 +33,7 @@ export const AuthProvider = ({children}) => {
         photoURL:"https://lh3.googleusercontent.com/a/AATXAJzkwGdlHRHZXY6l-18v6wUvUNKel0JNfAznsJsB=s96-c",
         messages:[{
           content:"Hi let's talk",
-          timeStamp:"today",
+          timeStamp:new Date(),
           sentByMainUser:false,
           messageID:"efyf23g6y7efj23fyt"
         }]
@@ -44,7 +44,7 @@ export const AuthProvider = ({children}) => {
         photoURL:result.user.photoURL,
         messages:[{
           content:"Hi let's talk",
-          timeStamp:"today",
+          timeStamp:new Date(),
           sentByMainUser:true,
           messageID:"efyf23g6y7efj23fyt"
         }]

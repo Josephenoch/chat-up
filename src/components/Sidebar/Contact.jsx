@@ -94,8 +94,8 @@ export const Contact = ({contact,id}) => {
                             width:"90%"
                         }}
                     >
-                        <DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>
-                        {`${contact.messages[0].content}`}
+                        {contact.messages[contact.messages.length-1].sentByMainUser&&<DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>}
+                        {`${contact.messages[contact.messages.length-1].content}`}
                     </Typography>
                 </Box>
                 <Box
@@ -108,7 +108,7 @@ export const Contact = ({contact,id}) => {
                             width:"35%"
                         }}
                     >
-                        {String(contact.messages[0].timeStamp).slice(0,24)}
+                        {new Date(contact.messages[contact.messages.length-1].timeStamp?.toDate()).toUTCString()}
                     </Typography>
                 </Box>
 
