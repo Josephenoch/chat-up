@@ -51,7 +51,7 @@ const useStyles = makeStyles({
     }
 })
 
-export const Contact = ({contact}) => {
+export const Contact = ({contact,id}) => {
   const [data, setData] = useState(null)
   const theme = useTheme()
   const classes = useStyles()
@@ -63,7 +63,7 @@ export const Contact = ({contact}) => {
         className={classes.rootContainer} 
         >
         <Link 
-            to={`${contact.id}`}
+            to={`${id}`}
             style={{
                 textDecoration:"none",
                 color:theme.palette.mode ==="dark" ? "white" : "black",

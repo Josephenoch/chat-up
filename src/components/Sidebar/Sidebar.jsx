@@ -36,7 +36,8 @@ export const Sidebar = () => {
             {contacts.map(contact =>
                 <Contact
                   key={contact.id}
-                  contact={contact}
+                  id={contact.id}
+                  contact={contact.data}
                 />
                 // console.log(contact.data)
               )

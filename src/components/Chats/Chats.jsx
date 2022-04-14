@@ -46,7 +46,9 @@ export const Chats = () => {
   
   const endDiv = useRef(null)
 
-  const contact =contacts.filter(contact => contact.id===roomId)[0]
+  const contact = contacts.filter(contact => contact.id===roomId)[0]
+  console.log(contact)
+  console.log(contacts)
 
   
   useEffect(()=>{
@@ -72,15 +74,15 @@ export const Chats = () => {
                 >
                     <Box className={classes.userHeaderBox}>
                         <UserHeader
-                            user={contact}
+                            user={contact.data}
                         />
                     </Box>
                     <Box
                         className={classes.messageBox}
                     >
-                        {contact.messages.map((message) =>
+                        {contact.data.messages.map((message) =>
                                 <Message
-                                    key={message.id}
+                                    key={message.messageID}
                                     message={message}
                                 />
                             )

@@ -33,6 +33,7 @@ const useStyles = makeStyles({
 
 export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
   const {receivedInvites} = useAuth()
+  console.log(receivedInvites)
   const classes = useStyles()
   return (
     <Modal
@@ -61,10 +62,10 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
                 className={classes.inviteBox}
                 key={invite.id}
               >
-                <Avatar src={invite.photoURL}/>
+                <Avatar src={invite.data.photoURL}/>
                 <Box sx={{ marginLeft:"10px", width:"60%" }}>
-                    <Typography variant="body2" color="primary">{invite.sendersEmail.toLowerCase()}</Typography>
-                    <Typography variant="caption" color="textSecondary">{invite.sendersDisplayName}</Typography>
+                    <Typography variant="body2" color="primary">{invite.data.sender.toLowerCase()}</Typography>
+                    <Typography variant="caption" color="textSecondary">{invite.data.displayName}</Typography>
                 </Box>
                 <Button 
                     variant="contained" 

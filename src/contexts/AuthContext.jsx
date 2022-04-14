@@ -16,7 +16,7 @@ export const useAuth = () => {
 export const AuthProvider = ({children}) => {
   const [mainUser, setMainUser] = useState(null)
   const [contacts, setContacts] = useState([])
-  const [receivedInvites, setReceivedInvites] = useState(null)
+  const [receivedInvites, setReceivedInvites] = useState([])
 
     const signIn = async () =>{
       const result = await signInWithPopup(auth, provider)
@@ -25,16 +25,53 @@ export const AuthProvider = ({children}) => {
         await setDoc(doc(collection(db,"user"), result.user.email),{
           displayName:result.user.displayName,
           photoURL:result.user.photoURL,
-          contacts:[],
-          receivedInvites:[]
         })
-      
+        await setDoc(doc(collection(db, `user/${result.user.email}/contacts`)),{
+          sender:"judasiscariotthesly@gmail.com",
+          displayName:"A Free Man",
+          photoURL:"https://lh3.googleusercontent.com/a/AATXAJzkwGdlHRHZXY6l-18v6wUvUNKel0JNfAznsJsB=s96-c",
+          messages:[{
+            content:"Hi let's talk",
+            timeStamp:"today",
+            sentByMainUser:false,
+            messageID:"efyf23g6y7efj23fyt"
+          }]
+        })
+        await setDoc(doc(collection(db, `user/judasiscariotthesly@gmail.com/contacts`)),{
+          sender:result.user.email,
+          displayName:result.user.displayName,
+          photoURL:result.user.photoURL,
+          messages:[{
+            content:"Hi let's talk",
+            timeStamp:"today",
+            sentByMainUser:true,
+            messageID:"efyf23g6y7efj23fyt"
+          }]
+        })
       }
-      setContacts(document.data().contacts)
-      setReceivedInvites(document.data().receivedInvites)
+      const cntcts = await getDocs((collection(db, `user/${result.user.email}/contacts`)))
+      const invites = await getDocs((collection(db, `user/${result.user.email}/receivedInvites`)))
+
+      const newArray = [...contacts]
+      const newArray2 = [...receivedInvites]
+
+      cntcts.forEach(cont=>{
+        newArray.push({
+          id:cont.id,
+          data:cont.data()
+        })
+      })
+      invites.forEach(invite=>{
+        newArray2.push({
+          id:invite.id,
+          data:invite.data()
+        })
+      })
+      setContacts(newArray)
+      setReceivedInvites(newArray2)
       setMainUser({
-        displayName:document.data().displayName,
-        photoURL:document.data().photoURL
+        displayName:result.user.displayName,
+        photoURL:result.user.photoURL
       })
     }
   
