@@ -21,7 +21,6 @@ const useStyles = makeStyles({
 export const Sidebar = () => {
   const {user} = useChats()
   const {contacts} = useAuth()
-  console.log(contacts)
   const classes = useStyles()
   return (
     <>

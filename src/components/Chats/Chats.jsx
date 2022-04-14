@@ -47,20 +47,16 @@ export const Chats = () => {
   const endDiv = useRef(null)
 
   const contact = contacts.filter(contact => contact.id===roomId)[0]
-  console.log(contact)
-  console.log(contacts)
 
   
   useEffect(()=>{
     if(contact){
         endDiv.current.scrollIntoView()
-        console.log(endDiv.current)
     }
   },[user])
   useEffect(()=>{
     if(contact){
         endDiv.current.scrollIntoView()
-        console.log(endDiv.current)
     }
   })
   

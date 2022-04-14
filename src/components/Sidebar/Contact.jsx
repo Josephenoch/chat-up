@@ -6,8 +6,7 @@ import { makeStyles } from '@mui/styles';
 
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/styles';
-
-import { doc, getDoc, setDoc, collection, getDocs } from "firebase/firestore"; 
+ 
 
 
 // import { Link } from 'react-router-dom';
@@ -56,8 +55,6 @@ export const Contact = ({contact,id}) => {
   const theme = useTheme()
   const classes = useStyles()
 
-  
-  console.log(contact)
   return (
     <Paper 
         className={classes.rootContainer} 

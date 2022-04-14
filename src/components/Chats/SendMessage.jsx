@@ -5,8 +5,9 @@ import {Box, IconButton} from "@mui/material"
 import { EmojiEmotionsOutlined } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles'
 import { Emoji } from '../Emoji'
-import { useChats } from '../../contexts/ChatsContext'
-import { useParams } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
+import {faker} from '@faker-js/faker'
+import {serverTimestamp } from "firebase/firestore";
 
 const useStyles = makeStyles({
     root:{
@@ -40,18 +41,22 @@ export const SendMessage = ({contact}) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const [modal, setModal] = useState(false)
-  const {addMessage} = useChats()
+  const {sendMessage} = useAuth()
   const classes = useStyles() 
   const handleModal = (e) => {
     setAnchorEl(e.currentTarget)
-    console.log(e.currentTarget)
-
     setModal(!modal)
   }
-  const sendMessage = (e) =>{
+  const handleSendMessage = (e) =>{
       e.preventDefault()
+      const msg = {
+          content:message,
+          sentByMainUser:true,
+          id:faker.datatype.uuid(),
+          timeStamp: new Date()
+      }
       if(message!==""){
-          addMessage(message, contact.id)
+          sendMessage(msg, contact)
       }
       setMessage("")
   }
@@ -84,7 +89,7 @@ export const SendMessage = ({contact}) => {
             />
             <button
                 type="submit"
-                onClick={sendMessage}
+                onClick={handleSendMessage}
                 style={{display:"none"}}
             ></button>
         </form>

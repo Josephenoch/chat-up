@@ -33,7 +33,6 @@ const useStyles = makeStyles({
 
 export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
   const {receivedInvites} = useAuth()
-  console.log(receivedInvites)
   const classes = useStyles()
   return (
     <Modal
