@@ -33,7 +33,7 @@ export const Sidebar = () => {
           <SidebarSearch/>
           <Box className={classes.contactContainer}>
             {contacts.map(contact =>
-                <Contact
+                !contact.data.blocked&&<Contact
                   key={contact.id}
                   id={contact.id}
                   contact={contact.data}

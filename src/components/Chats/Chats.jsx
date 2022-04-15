@@ -50,18 +50,18 @@ export const Chats = () => {
 
   
   useEffect(()=>{
-    if(contact){
+    if(contact && !contact.data.blocked){
         endDiv.current.scrollIntoView()
     }
   },[user])
   useEffect(()=>{
-    if(contact){
+    if(contact && !contact.data.blocked){
         endDiv.current.scrollIntoView()
     }
   })
   
 
-  if(contact){
+  if(contact && !contact.data.blocked){
         return (
       
             <Box className="chats">
