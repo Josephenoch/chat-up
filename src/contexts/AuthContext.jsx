@@ -16,7 +16,6 @@ export const useAuth = () => {
 export const AuthProvider = ({children}) => {
   const [mainUser, setMainUser] = useState(null)
   const [contacts, setContacts] = useState([])
-  const [sendEr, setSendEr] = useState(null)
   const [receivedInvites, setReceivedInvites] = useState([])
 
   const signIn = async () =>{
@@ -31,6 +30,7 @@ export const AuthProvider = ({children}) => {
         sender:"judasiscariotthesly@gmail.com",
         displayName:"A Free Man",
         photoURL:"https://lh3.googleusercontent.com/a/AATXAJzkwGdlHRHZXY6l-18v6wUvUNKel0JNfAznsJsB=s96-c",
+        blocked:false,
         messages:[{
           content:"Hi let's talk",
           timeStamp:new Date(),
@@ -42,6 +42,7 @@ export const AuthProvider = ({children}) => {
         sender:result.user.email,
         displayName:result.user.displayName,
         photoURL:result.user.photoURL,
+        blocked:false,
         messages:[{
           content:"Hi let's talk",
           timeStamp:new Date(),
@@ -82,7 +83,7 @@ export const AuthProvider = ({children}) => {
   
   const sendMessage = async (message,contact) => {
     const sentToData = await getDoc(doc(db, `user/${mainUser.email}/contacts`, contact.id))
-    const sentByData = await getDocs(query(collection(db, `user/${contact.data.sender}/contacts`), where("sender","==",mainUser.email), limit(1)))
+    const sentByData = await getDocs(query(collection(db, `user/${contact.data.sender}/contacts`), where("sender","==",mainUser.email)))
     const sentTo = {
       data:sentToData.data(),
       id:sentToData.id
@@ -97,15 +98,40 @@ export const AuthProvider = ({children}) => {
     })
     await updateDoc(doc(db, `user/${sentTo.data.sender}/contacts`,sentBy.id),{
       messages:[...sentBy.data.messages,{...message, sentByMainUser:false}]
-  })
-}
+    })
+  }
+
+  const addUser = async (email)=>{
+    const document = await getDoc(doc(db, "user", email))
+
+    if(document.exists()){
+      const doc2 = await getDocs(query(collection(db, `user/${email}/receivedInvites`), where("sender","==",mainUser.email)))
+      if(doc2.docs.length<1){
+        const doc3 = await getDocs(query(collection(db, `user/${mainUser.email}/sentInvites`), where("receiver","==",email)))
+        if(doc3.docs.length<1){
+          await setDoc(doc(collection(db, `user/${email}/receivedInvites`)),{
+            sender:mainUser.email,
+            displayName:mainUser.displayName,
+            photoURL:mainUser.photoURL,
+          })
+          await setDoc(doc(collection(db, `user/${mainUser.email}/sentInvites`)),{
+            receiver:email,
+            displayName:document.data().displayName,
+            photoURL:document.data().photoURL,
+          })
+        }
+      } 
+    }
+  }
+
   
   const value = {
       signIn,
       mainUser,
       contacts,
       receivedInvites,
-      sendMessage
+      sendMessage,
+      addUser
   } 
   return (
     <AuthContext.Provider value={value}>
