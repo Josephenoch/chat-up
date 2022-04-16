@@ -169,11 +169,20 @@ export const AuthProvider = ({children}) => {
       messages:[]
     })
     await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, id));
-    const doc1 = await getDocs(query(collection(db, `user/${inivite.email}/sentInvites`), where("receiver","==",mainUser.email)))
+    const doc1 = await getDocs(query(collection(db, `user/${invite.email}/sentInvites`), where("receiver","==",mainUser.email)))
     await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, doc1.docs.id));
     return {
-      type:"succes",
+      type:"success",
       message:"Contact succesfully accepted"
+    }
+  }
+  const rejectInvite = async (invite,id) => {
+    await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, id));
+    const doc1 = await getDocs(query(collection(db, `user/${invite.email}/sentInvites`), where("receiver","==",mainUser.email)))
+    await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, doc1.docs.id));
+    return {
+      type:"success",
+      message:"Invite Rejected"
     }
   }
   
@@ -184,7 +193,8 @@ export const AuthProvider = ({children}) => {
       receivedInvites,
       sendMessage,
       addUser,
-      acceptInvite
+      acceptInvite,
+      rejectInvite
   } 
   return (
     <AuthContext.Provider value={value}>

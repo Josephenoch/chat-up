@@ -35,7 +35,11 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
   const [status, setStatus] = useState(null)
   const {receivedInvites,acceptInvite} = useAuth()
   const classes = useStyles()
-  const handleInvite = async (data,id) =>{
+  const handleAccept = async (data,id) =>{
+    const message = await acceptInvite(data,id)
+    setStatus(message)
+  }
+  const handleReject = async (data,id) =>{
     const message = await acceptInvite(data,id)
     setStatus(message)
   }
@@ -76,7 +80,7 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
                       variant="contained" 
                       size="small" 
                       sx={{marginRight:"10px"}}
-                      onClick={()=>handleInvite(invite.data,invite.id)}
+                      onClick={()=>handleAccept(invite.data,invite.id)}
                   >
                       Accept
                   </Button>
@@ -84,7 +88,7 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
                       color="secondary" 
                       size="small" 
                       variant="outlined"
-                      // onClick={()=>handleInvite(invite.id)}
+                      onClick={()=>handleReject(invite.id)}
                   >
                       Reject
                   </Button>
