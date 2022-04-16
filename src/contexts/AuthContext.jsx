@@ -105,23 +105,52 @@ export const AuthProvider = ({children}) => {
     const document = await getDoc(doc(db, "user", email))
 
     if(document.exists()){
-      const doc2 = await getDocs(query(collection(db, `user/${email}/receivedInvites`), where("sender","==",mainUser.email)))
-      if(doc2.docs.length<1){
-        const doc3 = await getDocs(query(collection(db, `user/${mainUser.email}/sentInvites`), where("receiver","==",email)))
-        if(doc3.docs.length<1){
-          await setDoc(doc(collection(db, `user/${email}/receivedInvites`)),{
-            sender:mainUser.email,
-            displayName:mainUser.displayName,
-            photoURL:mainUser.photoURL,
-          })
-          await setDoc(doc(collection(db, `user/${mainUser.email}/sentInvites`)),{
-            receiver:email,
-            displayName:document.data().displayName,
-            photoURL:document.data().photoURL,
-          })
+      const doc1 = await getDocs(query(collection(db, `user/${mainUser.email}/contacts`), where("sender","==",email)))
+      if(doc1.docs.length<1){
+        const doc2 = await getDocs(query(collection(db, `user/${email}/receivedInvites`), where("sender","==",mainUser.email)))
+        if(doc2.docs.length<1){
+          const doc3 = await getDocs(query(collection(db, `user/${mainUser.email}/receivedInvites`), where("sender","==",email)))
+          console.log(doc3.docs)
+          if(doc3.docs.length<1){
+            await setDoc(doc(collection(db, `user/${email}/receivedInvites`)),{
+              sender:mainUser.email,
+              displayName:mainUser.displayName,
+              photoURL:mainUser.photoURL,
+            })
+            await setDoc(doc(collection(db, `user/${mainUser.email}/sentInvites`)),{
+              receiver:email,
+              displayName:document.data().displayName,
+              photoURL:document.data().photoURL,
+            })
+            const message = {
+              type:"success",
+              message:"Successful"
+            }   
+            return message
+          }
+          const message = {
+            type:"error",
+            message:"You have already received an Invite from this user"
+          }
+          return message
         }
-      } 
+        const message = {
+          type:"error",
+          message:"You have already sent an invite to this user"
+        }
+        return message
+      }
+      const message = {
+        type:"error",
+        message:"This user is already in your contact list"
+      }
+      return message
     }
+    const message = {
+      type:"error",
+      message:"This user does not exist on our database"
+    }
+    return message
   }
 
   
