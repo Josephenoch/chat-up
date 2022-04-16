@@ -2,7 +2,7 @@ import React,{useEffect, useState} from 'react'
 
 import { createContext, useContext} from 'react'
 // import { mainUser } from "../fakeData";
-import { doc, getDoc, setDoc, collection, getDocs, updateDoc, onSnapshot, where, query, limit } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, collection, getDocs, updateDoc, onSnapshot, where, query, deleteDoc } from "firebase/firestore"; 
 
 import { auth, provider, } from '../firebase-config';
 import {signInWithPopup} from "firebase/auth"
@@ -153,6 +153,29 @@ export const AuthProvider = ({children}) => {
     return message
   }
 
+  const acceptInvite = async (invite,id) => {
+    await setDoc(doc(collection(db, `user/${mainUser.email}/contacts`)),{
+      sender:invite.email,
+      displayName:invite.displayName,
+      photoURL:invite.photoURL,
+      blocked:false,
+      messages:[]
+    })
+    await setDoc(doc(collection(db, `user/${invite.email}/contacts`)),{
+      sender:mainUser.email,
+      displayName:mainUser.displayName,
+      photoURL:mainUser.photoURL,
+      blocked:false,
+      messages:[]
+    })
+    await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, id));
+    const doc1 = await getDocs(query(collection(db, `user/${inivite.email}/sentInvites`), where("receiver","==",mainUser.email)))
+    await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, doc1.docs.id));
+    return {
+      type:"succes",
+      message:"Contact succesfully accepted"
+    }
+  }
   
   const value = {
       signIn,
@@ -160,7 +183,8 @@ export const AuthProvider = ({children}) => {
       contacts,
       receivedInvites,
       sendMessage,
-      addUser
+      addUser,
+      acceptInvite
   } 
   return (
     <AuthContext.Provider value={value}>

@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 
-import {Modal, Box, Paper, Typography, Avatar, Button, IconButton} from '@mui/material'
+import {Modal, Box, Paper, Typography, Avatar, Button, IconButton, Snackbar, Alert} from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { CancelOutlined } from '@mui/icons-material'
 import { useAuth } from '../../contexts/AuthContext'
@@ -32,59 +32,75 @@ const useStyles = makeStyles({
 })
 
 export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
-  const {receivedInvites} = useAuth()
+  const [status, setStatus] = useState(null)
+  const {receivedInvites,acceptInvite} = useAuth()
   const classes = useStyles()
+  const handleInvite = async (data,id) =>{
+    const message = await acceptInvite(data,id)
+    setStatus(message)
+  }
   return (
-    <Modal
-        open={inviteModal}
-        onClose={handleInviteModal}
-    >
-        <Paper
-        className={classes.modalContainer}
-        >
-          <IconButton
-            sx={{
-              top:"5px",
-              right:"10px",
-              position:"absolute"
-            }}
-            onClick={handleInviteModal}
+    <>
+      <Modal
+          open={inviteModal}
+          onClose={handleInviteModal}
+      >
+          <Paper
+          className={classes.modalContainer}
           >
-            <CancelOutlined/>
-          </IconButton>
-          <Typography variant="h5" sx={{marginBottom:"20px"}}>
-              Review Invites
-          </Typography>
-          
-          {receivedInvites.map(invite=>
-              <Box 
-                className={classes.inviteBox}
-                key={invite.id}
-              >
-                <Avatar src={invite.data.photoURL}/>
-                <Box sx={{ marginLeft:"10px", width:"60%" }}>
-                    <Typography variant="body2" color="primary">{invite.data.sender.toLowerCase()}</Typography>
-                    <Typography variant="caption" color="textSecondary">{invite.data.displayName}</Typography>
+            <IconButton
+              sx={{
+                top:"5px",
+                right:"10px",
+                position:"absolute"
+              }}
+              onClick={handleInviteModal}
+            >
+              <CancelOutlined/>
+            </IconButton>
+            <Typography variant="h5" sx={{marginBottom:"20px"}}>
+                Review Invites
+            </Typography>
+            
+            {receivedInvites.map(invite=>
+                <Box 
+                  className={classes.inviteBox}
+                  key={invite.id}
+                >
+                  <Avatar src={invite.data.photoURL}/>
+                  <Box sx={{ marginLeft:"10px", width:"60%" }}>
+                      <Typography variant="body2" color="primary">{invite.data.sender.toLowerCase()}</Typography>
+                      <Typography variant="caption" color="textSecondary">{invite.data.displayName}</Typography>
+                  </Box>
+                  <Button 
+                      variant="contained" 
+                      size="small" 
+                      sx={{marginRight:"10px"}}
+                      onClick={()=>handleInvite(invite.data,invite.id)}
+                  >
+                      Accept
+                  </Button>
+                  <Button 
+                      color="secondary" 
+                      size="small" 
+                      variant="outlined"
+                      // onClick={()=>handleInvite(invite.id)}
+                  >
+                      Reject
+                  </Button>
                 </Box>
-                <Button 
-                    variant="contained" 
-                    size="small" 
-                    sx={{marginRight:"10px"}}
-                    // onClick={()=>handleInvite(invite.id)}
-                >
-                    Accept
-                </Button>
-                <Button 
-                    color="secondary" 
-                    size="small" 
-                    variant="outlined"
-                    // onClick={()=>handleInvite(invite.id)}
-                >
-                    Reject
-                </Button>
-              </Box>
-          )}  
-        </Paper>
-    </Modal>
+            )}  
+          </Paper>
+      </Modal>
+      <Snackbar
+            open={status}
+            autoHideDuration={3000}
+            onClose={() => setStatus(null)}
+        >
+          {status&&<Alert  severity={status.type=="success"?"success":"error"}sx={{ width: '100%' }}>
+            {status.message}
+        </Alert>}
+      </Snackbar>
+    </>
   )
 }
