@@ -88,7 +88,7 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
                       color="secondary" 
                       size="small" 
                       variant="outlined"
-                      onClick={()=>handleReject(invite.id)}
+                      onClick={()=>handleReject(invite.data,invite.id)}
                   >
                       Reject
                   </Button>

@@ -51,29 +51,31 @@ export const AuthProvider = ({children}) => {
         }]
       })
     }
+    const array1 = []
+    const array2 = []
     await onSnapshot((collection(db, `user/${result.user.email}/contacts`)),(cntcts)=> {
        cntcts.forEach(contact=>{
-        setContacts([...contacts,
+        array1.push(
           {
             id:contact.id,
             data:contact.data()
           }
-        ])
+        )
        })
       
       }
     )
     await onSnapshot((collection(db, `user/${result.user.email}/receivedInvites`)),invites => {
       invites.forEach(invite=>{
-        setReceivedInvites([...receivedInvites,
-          {
-            id:invite.id,
-            data:invite.data()
-          }
-        ])
+        array2.push({
+          id:invite.id,
+          data:invite.data()
+        })
         })
     })
-    
+    setContacts(array1)
+    setReceivedInvites(array2)
+
     setMainUser({
       email:result.user.email,
       displayName:result.user.displayName,
@@ -103,7 +105,6 @@ export const AuthProvider = ({children}) => {
 
   const addUser = async (email)=>{
     const document = await getDoc(doc(db, "user", email))
-
     if(document.exists()){
       const doc1 = await getDocs(query(collection(db, `user/${mainUser.email}/contacts`), where("sender","==",email)))
       if(doc1.docs.length<1){
@@ -154,14 +155,15 @@ export const AuthProvider = ({children}) => {
   }
 
   const acceptInvite = async (invite,id) => {
+    console.log(invite.sender)
     await setDoc(doc(collection(db, `user/${mainUser.email}/contacts`)),{
-      sender:invite.email,
+      sender:invite.sender,
       displayName:invite.displayName,
       photoURL:invite.photoURL,
       blocked:false,
       messages:[]
     })
-    await setDoc(doc(collection(db, `user/${invite.email}/contacts`)),{
+    await setDoc(doc(collection(db, `user/${invite.sender}/contacts`)),{
       sender:mainUser.email,
       displayName:mainUser.displayName,
       photoURL:mainUser.photoURL,
@@ -169,7 +171,7 @@ export const AuthProvider = ({children}) => {
       messages:[]
     })
     await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, id));
-    const doc1 = await getDocs(query(collection(db, `user/${invite.email}/sentInvites`), where("receiver","==",mainUser.email)))
+    const doc1 = await getDocs(query(collection(db, `user/${invite.sender}/sentInvites`), where("receiver","==",mainUser.email)))
     await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, doc1.docs.id));
     return {
       type:"success",
@@ -178,7 +180,7 @@ export const AuthProvider = ({children}) => {
   }
   const rejectInvite = async (invite,id) => {
     await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, id));
-    const doc1 = await getDocs(query(collection(db, `user/${invite.email}/sentInvites`), where("receiver","==",mainUser.email)))
+    const doc1 = await getDocs(query(collection(db, `user/${invite.sender}/sentInvites`), where("receiver","==",mainUser.email)))
     await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, doc1.docs.id));
     return {
       type:"success",
