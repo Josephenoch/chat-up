@@ -51,30 +51,14 @@ export const AuthProvider = ({children}) => {
         }]
       })
     }
-    const array1 = []
-    const array2 = []
-    await onSnapshot((collection(db, `user/${result.user.email}/contacts`)),(cntcts)=> {
-       cntcts.forEach(contact=>{
-        array1.push(
-          {
-            id:contact.id,
-            data:contact.data()
-          }
-        )
-       })
-      
-      }
-    )
-    await onSnapshot((collection(db, `user/${result.user.email}/receivedInvites`)),invites => {
-      invites.forEach(invite=>{
-        array2.push({
-          id:invite.id,
-          data:invite.data()
-        })
-        })
-    })
-    setContacts(array1)
-    setReceivedInvites(array2)
+
+    const cntcts = await getDocs((collection(db, `user/${result.user.email}/contacts`)))
+    const cntcts2 = cntcts.docs.map(cnt => {return  {id:cnt.id, data:cnt.data()}})
+    const invites = await getDocs((collection(db, `user/${result.user.email}/receivedInvites`)))
+    const invites2 = invites.docs.map(invite => {return  {id:invite.id, data:invite.data()}})
+  
+    setContacts(cntcts2)
+    setReceivedInvites(invites2)
 
     setMainUser({
       email:result.user.email,
