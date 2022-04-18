@@ -6,7 +6,10 @@ import { makeStyles } from '@mui/styles';
 
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/styles';
- 
+
+import { onSnapshot,collection,doc } from "firebase/firestore"
+import { db } from "../../firebase-config"
+import { useAuth } from '../../contexts/AuthContext';
 
 
 // import { Link } from 'react-router-dom';
@@ -51,15 +54,30 @@ const useStyles = makeStyles({
 })
 
 export const Contact = ({contact,id}) => {
-  const [data, setData] = useState(null)
   const theme = useTheme()
+  const [loading, setLoading] = useState(true)
+  const [messages, setMessages] = useState([])
+  const {mainUser} = useAuth()
   const classes = useStyles()
+  useEffect(()=>{
+      const fetchData = async () =>{
+        await onSnapshot(collection(db,`user/${mainUser.email}/contacts/${id}/messages`),snapShot=>{
+            setMessages(snapShot.docs)
+        })
+        setLoading(false)
+      }
+    fetchData()
+    // console.log(newArray)
+    
 
+}
+,[])
   return (
     <Paper 
         className={classes.rootContainer} 
-        >
-        <Link 
+    >
+            
+        {loading?"loading":<Link 
             to={`${id}`}
             style={{
                 textDecoration:"none",
@@ -113,7 +131,7 @@ export const Contact = ({contact,id}) => {
                 </Box>
 
             </Box>
-        </Link>
+        </Link>}
     </Paper>
   )
 }

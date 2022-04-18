@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 
 import {Box} from "@mui/material"
 import { makeStyles } from '@mui/styles'
@@ -41,14 +41,16 @@ const useStyles = makeStyles({
 export const Chats = () => {
   const classes = useStyles()
   const {user} = useChats()
-  const {contacts} = useAuth()
+  const [messages, setMessages] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const {contacts,mainUser} = useAuth()
   const {roomId} = useParams()
   
   const endDiv = useRef(null)
 
   const contact = contacts.filter(contact => contact.id===roomId)[0]
 
-  
+ 
   useEffect(()=>{
     if(contact && !contact.data.blocked){
         endDiv.current.scrollIntoView()
