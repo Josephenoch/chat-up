@@ -2,7 +2,7 @@ import React,{useEffect, useState} from 'react'
 
 import { createContext, useContext} from 'react'
 // import { mainUser } from "../fakeData";
-import { doc, getDoc, setDoc, collection, getDocs, updateDoc, onSnapshot, where, query, deleteDoc } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, collection, getDocs, updateDoc, addDoc, where, query, deleteDoc, serverTimestamp, onSnapshot } from "firebase/firestore"; 
 
 import { auth, provider, } from '../firebase-config';
 import {signInWithPopup} from "firebase/auth"
@@ -26,39 +26,40 @@ export const AuthProvider = ({children}) => {
         displayName:result.user.displayName,
         photoURL:result.user.photoURL,
       })
-      await setDoc(doc(collection(db, `user/${result.user.email}/contacts`)),{
+      const senderID = await addDoc(collection(db, `user/${result.user.email}/contacts`),{
         sender:"judasiscariotthesly@gmail.com",
         displayName:"A Free Man",
         photoURL:"https://lh3.googleusercontent.com/a/AATXAJzkwGdlHRHZXY6l-18v6wUvUNKel0JNfAznsJsB=s96-c",
         blocked:false,
-        messages:[{
-          content:"Hi let's talk",
-          timeStamp:new Date(),
-          sentByMainUser:false,
-          messageID:"efyf23g6y7efj23fyt"
-        }]
+  
       })
-      await setDoc(doc(collection(db, `user/judasiscariotthesly@gmail.com/contacts`)),{
+      const receiverID = await addDoc(collection(db, `user/judasiscariotthesly@gmail.com/contacts`),{
         sender:result.user.email,
         displayName:result.user.displayName,
         photoURL:result.user.photoURL,
         blocked:false,
-        messages:[{
-          content:"Hi let's talk",
-          timeStamp:new Date(),
-          sentByMainUser:true,
-          messageID:"efyf23g6y7efj23fyt"
-        }]
       })
+      await addDoc(collection(db, `user/${result.user.email}/contacts/${senderID.id}/messages`),{
+        timeStamp: serverTimestamp(),
+        sentByMainUser:false,
+        content:"Hi, Let's talk"
+      }
+    )
+      await addDoc(collection(db, `user/judasiscariotthesly@gmail.com/contacts/${receiverID.id}/messages`),{
+          timeStamp: serverTimestamp(),
+          sentByMainUser:true,
+          content:"Hi, Let's talk"
+        }
+      )
     }
 
-    const cntcts = await getDocs((collection(db, `user/${result.user.email}/contacts`)))
-    const cntcts2 = cntcts.docs.map(cnt => {return  {id:cnt.id, data:cnt.data()}})
-    const invites = await getDocs((collection(db, `user/${result.user.email}/receivedInvites`)))
-    const invites2 = invites.docs.map(invite => {return  {id:invite.id, data:invite.data()}})
+    await onSnapshot((collection(db, `user/${result.user.email}/contacts`)),cntcts =>{
+      setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
+    })
+    await onSnapshot((collection(db, `user/${result.user.email}/receivedInvites`)),invites=>{
+      setReceivedInvites(invites.docs.map(invite => ({id:invite.id, data:invite.data()})))
+    })
   
-    setContacts(cntcts2)
-    setReceivedInvites(invites2)
 
     setMainUser({
       email:result.user.email,
@@ -68,7 +69,7 @@ export const AuthProvider = ({children}) => {
   }
   
   const sendMessage = async (message,contact) => {
-    const sentToData = await getDoc(doc(db, `user/${mainUser.email}/contacts`, contact.id))
+    const sentToData = await getDoc(doc(db, `user/${mainUser.email}/contacts/${contact.id}`, ))
     const sentByData = await getDocs(query(collection(db, `user/${contact.data.sender}/contacts`), where("sender","==",mainUser.email)))
     const sentTo = {
       data:sentToData.data(),
@@ -79,12 +80,12 @@ export const AuthProvider = ({children}) => {
       id:sentByData.docs[0].id
     }
     console.log(sentTo.data.sender,sentTo.id,contact.id)
-    await updateDoc(doc(db, `user/${mainUser.email}/contacts`,contact.id),{
-      messages:[...sentTo.data.messages,message]
-    })
-    await updateDoc(doc(db, `user/${sentTo.data.sender}/contacts`,sentBy.id),{
-      messages:[...sentBy.data.messages,{...message, sentByMainUser:false}]
-    })
+    await addDoc(collection(db, `user/${mainUser.email}/contacts/${contact.id}/messages`,),
+      {...message}
+    )
+    await addDoc(collection(db, `user/${sentTo.data.sender}/contacts/${sentBy.id}/messages`,),
+     {...message, sentByMainUser:false}
+    )
   }
 
   const addUser = async (email)=>{
@@ -145,14 +146,12 @@ export const AuthProvider = ({children}) => {
       displayName:invite.displayName,
       photoURL:invite.photoURL,
       blocked:false,
-      messages:[]
     })
     await setDoc(doc(collection(db, `user/${invite.sender}/contacts`)),{
       sender:mainUser.email,
       displayName:mainUser.displayName,
       photoURL:mainUser.photoURL,
       blocked:false,
-      messages:[]
     })
     await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, id));
     const doc1 = await getDocs(query(collection(db, `user/${invite.sender}/sentInvites`), where("receiver","==",mainUser.email)))

@@ -7,11 +7,11 @@ import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/styles';
 
-import { onSnapshot,collection,doc } from "firebase/firestore"
+import { onSnapshot,collection,doc, query, orderBy } from "firebase/firestore"
 import { db } from "../../firebase-config"
 import { useAuth } from '../../contexts/AuthContext';
 
-
+import { CircleSpinner } from "react-spinners-kit";
 // import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
@@ -56,28 +56,35 @@ const useStyles = makeStyles({
 export const Contact = ({contact,id}) => {
   const theme = useTheme()
   const [loading, setLoading] = useState(true)
-  const [messages, setMessages] = useState([])
+  const [message, setMessage] = useState()
+
   const {mainUser} = useAuth()
   const classes = useStyles()
   useEffect(()=>{
-      const fetchData = async () =>{
-        await onSnapshot(collection(db,`user/${mainUser.email}/contacts/${id}/messages`),snapShot=>{
-            setMessages(snapShot.docs)
-        })
-        setLoading(false)
-      }
-    fetchData()
-    // console.log(newArray)
-    
-
-}
-,[])
+        const fetchData = async () =>{
+            const q = query(collection(db,`user/${mainUser.email}/contacts/${id}/messages`), orderBy("timeStamp"))
+            await onSnapshot(q,snapShot=>{
+                setMessage({
+                    data:snapShot.docs[snapShot.docs.length-1].data(),
+                    id:snapShot.docs[snapShot.docs.length-1].id
+                })
+                setLoading(false)
+            })
+            
+        }
+        fetchData()
+    },[])
+//   useEffect(()=>{
+//       setLoading(false)
+//   },[messages])
   return (
     <Paper 
         className={classes.rootContainer} 
     >
             
-        {loading?"loading":<Link 
+        {loading?
+        <CircleSpinner size={18} color="#686769" loading={loading} />
+        :<Link 
             to={`${id}`}
             style={{
                 textDecoration:"none",
@@ -87,6 +94,7 @@ export const Contact = ({contact,id}) => {
             <Box
                 className={classes.childContainer}
             >
+                {console.log(loading)}
                 <Box className={classes.avatarBox}>
                     <Avatar src={contact.photoURL}/>
                 </Box>
@@ -112,8 +120,8 @@ export const Contact = ({contact,id}) => {
                             width:"90%"
                         }}
                     >
-                        {contact.messages[contact.messages.length-1].sentByMainUser&&<DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>}
-                        {`${contact.messages[contact.messages.length-1].content}`}
+                        {message.data.sentByMainUser&&<DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>}
+                        {message.data.content}
                     </Typography>
                 </Box>
                 <Box
@@ -126,7 +134,7 @@ export const Contact = ({contact,id}) => {
                             width:"35%"
                         }}
                     >
-                        {new Date(contact.messages[contact.messages.length-1].timeStamp?.toDate()).toUTCString()}
+                        {new Date(message.data.timeStamp?.toDate()).toUTCString()}
                     </Typography>
                 </Box>
 

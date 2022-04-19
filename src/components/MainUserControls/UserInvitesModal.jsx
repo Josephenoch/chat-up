@@ -5,6 +5,9 @@ import { makeStyles } from '@mui/styles'
 import { CancelOutlined } from '@mui/icons-material'
 import { useAuth } from '../../contexts/AuthContext'
 
+import notFound from "../../assets/notFound.svg"
+
+
 const useStyles = makeStyles({
   modalContainer:{
     top:"50%",
@@ -43,6 +46,35 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
     const message = await acceptInvite(data,id)
     setStatus(message)
   }
+  const userInvites = 
+    receivedInvites.map(invite=>
+      <Box 
+        className={classes.inviteBox}
+        key={invite.id}
+      >
+        <Avatar src={invite.data.photoURL}/>
+        <Box sx={{ marginLeft:"10px", width:"60%" }}>
+            <Typography variant="body2" color="primary">{invite.data.sender.toLowerCase()}</Typography>
+            <Typography variant="caption" color="textSecondary">{invite.data.displayName}</Typography>
+        </Box>
+        <Button 
+            variant="contained" 
+            size="small" 
+            sx={{marginRight:"10px"}}
+            onClick={()=>handleAccept(invite.data,invite.id)}
+        >
+            Accept
+        </Button>
+        <Button 
+            color="secondary" 
+            size="small" 
+            variant="outlined"
+            onClick={()=>handleReject(invite.data,invite.id)}
+        >
+            Reject
+        </Button>
+      </Box>
+    )
   return (
     <>
       <Modal
@@ -65,35 +97,18 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
             <Typography variant="h5" sx={{marginBottom:"20px"}}>
                 Review Invites
             </Typography>
+
+
+            {
+              receivedInvites.length>0
+                ?
+                  userInvites:
+                <>
+                  <img src={notFound} style={{width:"200px", marginBottom:"30px"}} />
+                  <Typography variant="caption"> No New Invite</Typography>
+                </>
+            }  
             
-            {receivedInvites.map(invite=>
-                <Box 
-                  className={classes.inviteBox}
-                  key={invite.id}
-                >
-                  <Avatar src={invite.data.photoURL}/>
-                  <Box sx={{ marginLeft:"10px", width:"60%" }}>
-                      <Typography variant="body2" color="primary">{invite.data.sender.toLowerCase()}</Typography>
-                      <Typography variant="caption" color="textSecondary">{invite.data.displayName}</Typography>
-                  </Box>
-                  <Button 
-                      variant="contained" 
-                      size="small" 
-                      sx={{marginRight:"10px"}}
-                      onClick={()=>handleAccept(invite.data,invite.id)}
-                  >
-                      Accept
-                  </Button>
-                  <Button 
-                      color="secondary" 
-                      size="small" 
-                      variant="outlined"
-                      onClick={()=>handleReject(invite.data,invite.id)}
-                  >
-                      Reject
-                  </Button>
-                </Box>
-            )}  
           </Paper>
       </Modal>
       <Snackbar

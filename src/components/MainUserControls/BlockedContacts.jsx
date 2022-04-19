@@ -5,6 +5,8 @@ import { makeStyles } from '@mui/styles'
 import { CancelOutlined } from '@mui/icons-material'
 import { useAuth } from '../../contexts/AuthContext'
 
+import notFound from "../../assets/notFound.svg"
+
 const useStyles = makeStyles({
   modalContainer:{
     top:"50%",
@@ -87,7 +89,13 @@ export const BlockedContacts = ({blockedContactsModal, handleBlockedContactsModa
           </Typography>
           
           {
-            blockedContacts.length>0?Blocked:<Typography variant='h3'>No Blocked</Typography>
+            blockedContacts.length>0
+              ?
+                Blocked:
+              <>
+                <img src={notFound} style={{width:"200px", marginBottom:"30px"}} />
+                <Typography variant="caption"> No Blocked Contacts</Typography>
+              </>
           }  
         </Paper>
     </Modal>

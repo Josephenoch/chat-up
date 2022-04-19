@@ -30,7 +30,7 @@ export const AddContact = ({addCntctModal, handleAddCntctModal}) => {
   const handleSubmit = async (e) =>{
       e.preventDefault()
       if(email!==mainUser.email){
-        const message = await addUser(email)
+        const message = await addUser(email.toLowerCase())
         setStatus(message)
       }
       else{

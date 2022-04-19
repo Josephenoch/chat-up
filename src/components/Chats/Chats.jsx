@@ -8,10 +8,14 @@ import { Message } from './Message'
 import { SendMessage } from "./SendMessage"
 import { useChats } from "../../contexts/ChatsContext"
 
-import { useParams } from 'react-router-dom'
+import { useParams , useLocation} from 'react-router-dom'
 import "./chats.css"
+import { onSnapshot,collection,query, orderBy } from "firebase/firestore"
+import { db } from "../../firebase-config"
 import { NoActiveChat } from "./NoActiveChat"
 import { useAuth } from "../../contexts/AuthContext"
+import { CircleSpinner } from "react-spinners-kit";
+
 
 const useStyles = makeStyles({
     root:{
@@ -41,15 +45,32 @@ const useStyles = makeStyles({
 export const Chats = () => {
   const classes = useStyles()
   const {user} = useChats()
-  const [messages, setMessages] = useState(null)
-  const [loading, setLoading] = useState(false)
   const {contacts,mainUser} = useAuth()
   const {roomId} = useParams()
+  const [loading, setLoading] = useState(true)
+  const [messages, setMessages] = useState()
   
   const endDiv = useRef(null)
 
   const contact = contacts.filter(contact => contact.id===roomId)[0]
 
+  useEffect(()=>{
+    const fetchData = async () =>{
+        const q = query(collection(db,`user/${mainUser.email}/contacts/${roomId}/messages`), orderBy("timeStamp"))
+        await onSnapshot(q,snapShot=>{
+            const array1 = snapShot.docs.map(data=>({
+                
+                data:data.data(),
+                id:data.id
+                
+            }))
+            setMessages(array1)
+            setLoading(false)
+        })
+        
+    }
+    fetchData()
+},[roomId])
  
   useEffect(()=>{
     if(contact && !contact.data.blocked){
@@ -78,13 +99,16 @@ export const Chats = () => {
                     <Box
                         className={classes.messageBox}
                     >
-                        {contact.data.messages.map((message) =>
-                                <Message
-                                    key={message.messageID}
-                                    message={message}
-                                />
-                            )
-                        }
+                        {loading?
+                            <CircleSpinner size={18} color="#686769" loading={loading} />
+                            :
+                            messages.map((message) =>
+                                    <Message
+                                        key={message.id}
+                                        message={message.data}
+                                    />
+                                )
+                            }
                          <Box sx={{float:"right", clear:"both"}} ref={endDiv}></Box>
 
                     </Box>

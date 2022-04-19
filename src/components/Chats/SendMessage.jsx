@@ -52,8 +52,7 @@ export const SendMessage = ({contact}) => {
       const msg = {
           content:message,
           sentByMainUser:true,
-          id:faker.datatype.uuid(),
-          timeStamp: new Date()
+          timeStamp: serverTimestamp()
       }
       if(message!==""){
           sendMessage(msg, contact)
