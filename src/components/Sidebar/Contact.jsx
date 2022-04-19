@@ -55,91 +55,55 @@ const useStyles = makeStyles({
 
 export const Contact = ({contact,id}) => {
   const theme = useTheme()
-  const [loading, setLoading] = useState(true)
-  const [message, setMessage] = useState()
-
-  const {mainUser} = useAuth()
   const classes = useStyles()
-  useEffect(()=>{
-        if(contact.timeStamp!==""){
-            const fetchData = async () =>{
-                const q = query(collection(db,`user/${mainUser.email}/contacts/${id}/messages`), orderBy("timeStamp"))
-                await onSnapshot(q,snapShot=>{
-                    setMessage({
-                        data:snapShot.docs[snapShot.docs.length-1].data(),
-                        id:snapShot.docs[snapShot.docs.length-1].id
-                    })
-                    setLoading(false)
-                })
-                
-            }
-            fetchData()
-        }
-    },[])
-    const ContactContent = 
-    <Paper 
-        className={classes.rootContainer} 
-    >
-            
-        {loading?
-        <CircleSpinner size={18} color="#686769" loading={loading} />
-        :<Link 
-            to={`${id}`}
-            style={{
-                textDecoration:"none",
-                color:theme.palette.mode ==="dark" ? "white" : "black",
-            }}
+    
+    return(
+        <Paper 
+            className={classes.rootContainer} 
         >
-            <Box
-                className={classes.childContainer}
+                
+            <Link 
+                to={`${id}`}
+                style={{
+                    textDecoration:"none",
+                    color:theme.palette.mode ==="dark" ? "white" : "black",
+                }}
             >
-                {console.log(loading)}
-                <Box className={classes.avatarBox}>
-                    <Avatar src={contact.photoURL}/>
-                </Box>
                 <Box
-                    className={classes.textBox}
+                    className={classes.childContainer}
                 >
-                    <Typography
-                        variant="body2"
-                        className={classes.text}
-                        sx={{
-                            width:"50%"
-                        }}
+                    <Box className={classes.avatarBox}>
+                        <Avatar src={contact.photoURL}/>
+                    </Box>
+                    <Box
+                        className={classes.textBox}
                     >
-                        {`${contact.displayName}`}
-                    </Typography>
-                    
-                    <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        className={classes.text}
-                        sx={{
-                            display:"block",
-                            width:"90%"
-                        }}
-                    >
-                        {message.data.sentByMainUser&&<DoneAll fontSize="1px" sx={{marginRight:"5px"}}/>}
-                        {message.data.content}
-                    </Typography>
-                </Box>
-                <Box
-                    className={classes.date}
-                >
-                    <Typography
-                        variant="caption"
-                        className={classes.text}
-                        sx={{
-                            width:"35%"
-                        }}
-                    >
-                        {new Date(message.data.timeStamp?.toDate()).toUTCString()}
-                    </Typography>
-                </Box>
+                        <Typography
+                            variant="body2"
+                            className={classes.text}
+                            sx={{
+                                width:"50%"
+                            }}
+                        >
+                            {`${contact.displayName}`}
+                        </Typography>
+                        
+                        <Typography
+                            variant="caption"
+                            color="textSecondary"
+                            className={classes.text}
+                            sx={{
+                                display:"block",
+                                width:"90%"
+                            }}
+                        >
+                            
+                            {contact.sender}
+                        </Typography>
+                    </Box>
 
-            </Box>
-        </Link>}
-    </Paper>
-  return contact.timeStamp? ContactContent:null
-
+                </Box>
+            </Link>
+        </Paper>
+    )
 }

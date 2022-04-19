@@ -28,7 +28,7 @@ const useStyles = makeStyles({
     border:"1px solid #e1e1e1"
 }
 })
-export const DeleteModal = ({deleteModal,handleDeleteModal}) => {
+export const DeleteModal = ({handleDelete,deleteModal,handleDeleteModal}) => {
   const classes = useStyles()
   return (
     <Modal
@@ -55,12 +55,14 @@ export const DeleteModal = ({deleteModal,handleDeleteModal}) => {
             sx={{
               marginRight:"30px"
             }}
+            onClick={handleDelete}
           >
               Confirm
           </Button>
           <Button 
             variant="contained" 
             color="primary"
+            onClick={handleDeleteModal}
           >
               Cancel
           </Button>

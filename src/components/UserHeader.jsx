@@ -93,7 +93,7 @@ export const UserHeader = ({user,mainUser,userID}) => {
                     anchorEl={mainUserAnchorEl}
             />
             <OtherUserMenu
-                contact={user}
+                email={user.sender}
                 contactId={userID} 
                 menu={otherUserMenu}
                 closeMenu={closeOtherUserMenu}

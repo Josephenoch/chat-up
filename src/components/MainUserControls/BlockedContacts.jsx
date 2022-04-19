@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 
-import {Modal, Box, Paper, Typography, Avatar, Button, IconButton} from '@mui/material'
+import {Modal, Box, Paper, Typography, Avatar, Button, IconButton, Snackbar, Alert} from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { CancelOutlined } from '@mui/icons-material'
 import { useAuth } from '../../contexts/AuthContext'
@@ -34,9 +34,14 @@ const useStyles = makeStyles({
 })
 
 export const BlockedContacts = ({blockedContactsModal, handleBlockedContactsModal}) => {
-  const {contacts} = useAuth()
+  const {contacts, unBlockUser} = useAuth()
   const blockedContacts = contacts.filter(contact => contact.data.blocked === true)
+  const [status, setStatus] = useState(null)
   const classes = useStyles()
+  const handleUnblock = async (id) =>{
+    const stat = await unBlockUser(id)
+    setStatus(stat)
+  }
   const Blocked = 
     blockedContacts.map(contact=>
         <Box 
@@ -52,9 +57,9 @@ export const BlockedContacts = ({blockedContactsModal, handleBlockedContactsModa
             variant="contained" 
             size="small" 
             sx={{marginRight:"10px"}}
-            // onClick={()=>handleInvite(invite.id)}
+            onClick={()=>handleUnblock(contact.id)}
         >
-            Accept
+            UnBlock
         </Button>
         <Button 
             color="secondary" 
@@ -62,42 +67,53 @@ export const BlockedContacts = ({blockedContactsModal, handleBlockedContactsModa
             variant="outlined"
             // onClick={()=>handleInvite(invite.id)}
         >
-            Reject
+            Delete
         </Button>
         </Box>
     )
   return (
-    <Modal
-        open={blockedContactsModal}
-        onClose={handleBlockedContactsModal}
-    >
-        <Paper
-        className={classes.modalContainer}
-        >
-          <IconButton
-            sx={{
-              top:"5px",
-              right:"10px",
-              position:"absolute"
-            }}
-            onClick={handleBlockedContactsModal}
+    <>
+      <Modal
+          open={blockedContactsModal}
+          onClose={handleBlockedContactsModal}
+      >
+          <Paper
+          className={classes.modalContainer}
           >
-            <CancelOutlined/>
-          </IconButton>
-          <Typography variant="h5" sx={{marginBottom:"20px"}}>
-              Review Blocked Contacts
-          </Typography>
-          
-          {
-            blockedContacts.length>0
-              ?
-                Blocked:
-              <>
-                <img src={notFound} style={{width:"200px", marginBottom:"30px"}} />
-                <Typography variant="caption"> No Blocked Contacts</Typography>
-              </>
-          }  
-        </Paper>
-    </Modal>
+            <IconButton
+              sx={{
+                top:"5px",
+                right:"10px",
+                position:"absolute"
+              }}
+              onClick={handleBlockedContactsModal}
+            >
+              <CancelOutlined/>
+            </IconButton>
+            <Typography variant="h5" sx={{marginBottom:"20px"}}>
+                Review Blocked Contacts
+            </Typography>
+            
+            {
+              blockedContacts.length>0
+                ?
+                  Blocked:
+                <>
+                  <img src={notFound} style={{width:"200px", marginBottom:"30px"}} />
+                  <Typography variant="caption"> No Blocked Contacts</Typography>
+                </>
+            }  
+          </Paper>
+      </Modal>
+      <Snackbar
+            open={status}
+            autoHideDuration={3000}
+            onClose={() => setStatus(null)}
+        >
+          {status&&<Alert  severity={status.type=="success"?"success":"error"}sx={{ width: '100%' }}>
+            {status.message}
+        </Alert>}
+      </Snackbar>
+    </>
   )
 }

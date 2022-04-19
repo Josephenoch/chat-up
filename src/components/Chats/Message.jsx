@@ -38,7 +38,6 @@ const useStyles = makeStyles({
 
 export const Message = ({message}) => {
   const classes = useStyles()
-//   console.log(new Date(message.timeStamp.toDate()))
   return (
     <Box
         className={`${classes.rootContainer} ${message.sentByMainUser ? classes.sent: classes.received}`}

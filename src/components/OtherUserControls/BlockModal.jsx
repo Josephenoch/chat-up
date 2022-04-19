@@ -1,5 +1,5 @@
-import React from 'react'
-import { Box, Modal,Paper, Typography, Button } from '@mui/material'
+import React,{useState} from 'react'
+import { Box, Modal,Paper, Typography, Button, Snackbar, Alert } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
 
@@ -30,45 +30,49 @@ const useStyles = makeStyles({
 })
 export const BlockModal = ({handleBlock,blockModal,handleBlockModal}) => {
   const classes = useStyles()
+
   return (
-    <Modal
-        open={blockModal}
-        onClose={handleBlockModal}
-    >
-      <Paper
-        className={classes.modalContainer}
+    <>
+      <Modal
+          open={blockModal}
+          onClose={handleBlockModal}
       >
-        <Typography
-          variant = "h5"
+        <Paper
+          className={classes.modalContainer}
         >
-          Confirm Block
+          <Typography
+            variant = "h5"
+          >
+            Confirm Block
 
-        </Typography>
-        <Box
-          sx={{
-            marginTop:"50px"
-          }}
-        >
-          <Button 
-            variant="outlined" 
-            color="secondary"
+          </Typography>
+          <Box
             sx={{
-              marginRight:"30px"
+              marginTop:"50px"
             }}
-            onClick={handleBlock}
           >
-              Confirm
-          </Button>
-          <Button 
-            variant="contained" 
-            color="primary"
-            onClick={handleBlockModal}
-          >
-              Cancel
-          </Button>
-        </Box>
-      </Paper>
+            <Button 
+              variant="outlined" 
+              color="secondary"
+              sx={{
+                marginRight:"30px"
+              }}
+              onClick={handleBlock}
+            >
+                Confirm
+            </Button>
+            <Button 
+              variant="contained" 
+              color="primary"
+              onClick={handleBlockModal}
+            >
+                Cancel
+            </Button>
+          </Box>
+        </Paper>
 
-    </Modal>
+      </Modal>
+
+    </>
   )
 }

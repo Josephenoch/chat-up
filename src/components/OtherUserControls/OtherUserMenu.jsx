@@ -1,12 +1,15 @@
 import React,{useState} from 'react';
-import {Menu, MenuItem} from '@mui/material'
+import {Menu, MenuItem, Alert, Snackbar} from '@mui/material'
 import { DeleteModal } from './DeleteModal';
 import { BlockModal } from './BlockModal';
+import { useAuth } from '../../contexts/AuthContext';
 
 
-export const OtherUserMenu = ({menu,closeMenu,anchorEl,contact,contactId}) => {
+export const OtherUserMenu = ({menu,closeMenu,anchorEl,contactId,email}) => {
   const [deleteModal, setDeleteModal] = useState(false)
   const [blockModal, setBlockModal] = useState(false)
+
+  const {blockUser, deleteUser} = useAuth()
   const handleDeleteModal = () =>{
       setDeleteModal(!deleteModal)
       closeMenu()
@@ -15,10 +18,12 @@ export const OtherUserMenu = ({menu,closeMenu,anchorEl,contact,contactId}) => {
       setBlockModal(!blockModal)
       closeMenu()
   }
-  const handleBlock = () =>{
-      console.log("Blockedtttt")
-      setBlockModal(!blockModal)
-      
+  const handleBlock = async () =>{
+    await blockUser(contactId)
+    setBlockModal(!blockModal)
+  }
+  const handleDelete = async () => {
+    await deleteUser(email,contactId)
   }
   return (
     <>
@@ -38,12 +43,15 @@ export const OtherUserMenu = ({menu,closeMenu,anchorEl,contact,contactId}) => {
       <DeleteModal
         deleteModal={deleteModal}
         handleDeleteModal={handleDeleteModal}
+        handleDelete={handleDelete}
       />
       <BlockModal
         handleBlock={handleBlock}
         blockModal={blockModal}
         handleBlockModal={handleBlockModal}
       />
+      
+
     </>
   )
 }

@@ -84,15 +84,17 @@ export const AuthProvider = ({children}) => {
     await updateDoc(doc(db, `user/${mainUser.email}/contacts/`,contact.id),{
       timeStamp: message.timeStamp
     })
-    await updateDoc(doc(db, `user/${sentTo.data.sender}/contacts/`,sentBy.id),{
-      timeStamp: message.timeStamp
-    })
     await addDoc(collection(db, `user/${mainUser.email}/contacts/${contact.id}/messages`,),
       {...message}
     )
-    await addDoc(collection(db, `user/${sentTo.data.sender}/contacts/${sentBy.id}/messages`,),
-     {...message, sentByMainUser:false}
-    )
+    if(!sentBy.data.blocked){
+      await updateDoc(doc(db, `user/${sentTo.data.sender}/contacts/`,sentBy.id),{
+        timeStamp: message.timeStamp
+      })
+      await addDoc(collection(db, `user/${sentTo.data.sender}/contacts/${sentBy.id}/messages`,),{
+        ...message, sentByMainUser:false
+      })
+    }
     
   }
 
@@ -104,7 +106,6 @@ export const AuthProvider = ({children}) => {
         const doc2 = await getDocs(query(collection(db, `user/${email}/receivedInvites`), where("sender","==",mainUser.email)))
         if(doc2.docs.length<1){
           const doc3 = await getDocs(query(collection(db, `user/${mainUser.email}/receivedInvites`), where("sender","==",email)))
-          console.log(doc3.docs)
           if(doc3.docs.length<1){
             await setDoc(doc(collection(db, `user/${email}/receivedInvites`)),{
               sender:mainUser.email,
@@ -148,7 +149,6 @@ export const AuthProvider = ({children}) => {
   }
 
   const acceptInvite = async (invite,id) => {
-    console.log(invite.sender)
     await setDoc(doc(collection(db, `user/${mainUser.email}/contacts`)),{
       sender:invite.sender,
       displayName:invite.displayName,
@@ -178,7 +178,35 @@ export const AuthProvider = ({children}) => {
       message:"Invite Rejected"
     }
   }
-  
+
+  const blockUser = async(id) =>{
+    await updateDoc(doc(db, `user/${mainUser.email}/contacts`, id),{
+      blocked:true
+    })
+    return {
+      type:"success",
+      message:"Blockedtttttt"
+    }
+  }
+  const unBlockUser = async(id) => {
+    await updateDoc(doc(db, `user/${mainUser.email}/contacts`, id),{
+      blocked:false
+    })
+    return {
+      type:"success",
+      message:"User UnBlocked"
+    }
+  }
+  const deleteUser = async(email,id) =>{
+    await deleteDoc(doc(db, `user/${mainUser.email}/contacts`, id))
+    const doc1 = await getDocs(query(collection(db, `user/${email}/contacts`), where("sender","==",mainUser.email)))
+    await deleteDoc(doc(db, `user/${email}/contacts`, doc1.docs[0].id))
+
+    return {
+      type:"success",
+      message:"Contact Deleted"
+    }
+  }
   const value = {
       signIn,
       mainUser,
@@ -187,7 +215,10 @@ export const AuthProvider = ({children}) => {
       sendMessage,
       addUser,
       acceptInvite,
-      rejectInvite
+      rejectInvite,
+      blockUser,
+      unBlockUser,
+      deleteUser
   } 
   return (
     <AuthContext.Provider value={value}>
