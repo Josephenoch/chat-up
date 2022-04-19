@@ -49,12 +49,9 @@ export const SignIn = () => {
            <FormGroup className={classes.formGroup}>
                <Button onClick={signIn} variant="contained">Sign In with Google</Button>
            </FormGroup>
-           <FormGroup className={classes.formGroup}>
-               <Button variant="contained">Sign In with Twitter</Button>
-           </FormGroup>
-           <Box className={classes.formGroup}>
+           {/* <Box className={classes.formGroup}>
                {error&&<Alert severity="error"> Wrong!</Alert>}
-           </Box>
+           </Box> */}
         </Paper>
     </Box>
   )
