@@ -5,6 +5,8 @@ import { makeStyles } from '@mui/styles'
 import { Add, MoreHoriz } from '@mui/icons-material'
 
 import {MainUserMenu} from "./MainUserControls/MainUserMenu"
+import {OtherUserMenu} from "./OtherUserControls/OtherUserMenu"
+
 import { AddContact } from './MainUserControls/AddContact'
 
 
@@ -20,22 +22,32 @@ const useStyles = makeStyles({
     }
 })
 
-export const UserHeader = ({user,mainUser}) => {
+export const UserHeader = ({user,mainUser,userID}) => {
   const classes = useStyles()
-  const [menu, setMenu] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(false)
+  const [mainUserMenu, setMainUserMenu] = useState(false)
+  const [mainUserAnchorEl, setMainUserAnchorEl] = useState(false)
   const [addCntctModal, setAddCntctModal] = useState(false)
+  const [otherUserMenu, setOtherUserMenu] = useState(false)
+  const [otherUserAnchorEl, setOtherUserAnchorEl] = useState(false)
   const handleAddCntctModal = () => {
-    closeMenu()
+    closeMainUserMenu()
     setAddCntctModal(!addCntctModal)
   }
-  const openMenu = (e) => {
-      setAnchorEl(e.currentTarget)
-      setMenu(true)
+  const openMainUserMenu = (e) => {
+    setMainUserAnchorEl(e.currentTarget)
+    setMainUserMenu(true)
   }
-  const closeMenu = () => {
-    setMenu(false)
-}
+  const closeMainUserMenu = () => {
+    setMainUserMenu(false)
+  }
+  
+  const openOtherUserMenu = (e) => {
+    setOtherUserAnchorEl(e.currentTarget)
+    setOtherUserMenu(true)
+  }
+  const closeOtherUserMenu = () => {
+    setOtherUserMenu(false)
+  }
   return (
     <Box
         className={classes.root}
@@ -76,11 +88,18 @@ export const UserHeader = ({user,mainUser}) => {
                 
             }
             <MainUserMenu
-                    menu={menu}
-                    closeMenu={closeMenu}
-                    anchorEl={anchorEl}
+                    menu={mainUserMenu}
+                    closeMenu={closeMainUserMenu}
+                    anchorEl={mainUserAnchorEl}
             />
-            <IconButton onClick={mainUser?(e)=>openMenu(e):null}>
+            <OtherUserMenu
+                contact={user}
+                contactId={userID} 
+                menu={otherUserMenu}
+                closeMenu={closeOtherUserMenu}
+                anchorEl={otherUserAnchorEl}
+            />
+            <IconButton onClick={mainUser?(e)=>openMainUserMenu(e):(e)=>openOtherUserMenu(e)}>
                 <MoreHoriz/>
             </IconButton>
         </Box>

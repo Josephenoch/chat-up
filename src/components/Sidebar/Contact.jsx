@@ -61,23 +61,22 @@ export const Contact = ({contact,id}) => {
   const {mainUser} = useAuth()
   const classes = useStyles()
   useEffect(()=>{
-        const fetchData = async () =>{
-            const q = query(collection(db,`user/${mainUser.email}/contacts/${id}/messages`), orderBy("timeStamp"))
-            await onSnapshot(q,snapShot=>{
-                setMessage({
-                    data:snapShot.docs[snapShot.docs.length-1].data(),
-                    id:snapShot.docs[snapShot.docs.length-1].id
+        if(contact.timeStamp!==""){
+            const fetchData = async () =>{
+                const q = query(collection(db,`user/${mainUser.email}/contacts/${id}/messages`), orderBy("timeStamp"))
+                await onSnapshot(q,snapShot=>{
+                    setMessage({
+                        data:snapShot.docs[snapShot.docs.length-1].data(),
+                        id:snapShot.docs[snapShot.docs.length-1].id
+                    })
+                    setLoading(false)
                 })
-                setLoading(false)
-            })
-            
+                
+            }
+            fetchData()
         }
-        fetchData()
     },[])
-//   useEffect(()=>{
-//       setLoading(false)
-//   },[messages])
-  return (
+    const ContactContent = 
     <Paper 
         className={classes.rootContainer} 
     >
@@ -141,5 +140,6 @@ export const Contact = ({contact,id}) => {
             </Box>
         </Link>}
     </Paper>
-  )
+  return contact.timeStamp? ContactContent:null
+
 }

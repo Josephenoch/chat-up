@@ -94,6 +94,7 @@ export const Chats = () => {
                     <Box className={classes.userHeaderBox}>
                         <UserHeader
                             user={contact.data}
+                            userID={contact.id}
                         />
                     </Box>
                     <Box

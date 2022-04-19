@@ -19,7 +19,7 @@ export const ChatsProvider = ({children}) => {
     const data = {
       content:content,
       id:faker.datatype.uuid(),
-      date:String(new Date),
+      date:String(new Date()),
       sentBy:0
     }
     const newUser = JSON.parse(JSON.stringify(user))
