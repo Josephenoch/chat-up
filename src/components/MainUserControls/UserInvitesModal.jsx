@@ -6,6 +6,7 @@ import { CancelOutlined } from '@mui/icons-material'
 import { useAuth } from '../../contexts/AuthContext'
 
 import notFound from "../../assets/notFound.svg"
+import { useControls } from '../../contexts/ControlsContext'
 
 
 const useStyles = makeStyles({
@@ -36,14 +37,15 @@ const useStyles = makeStyles({
 
 export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
   const [status, setStatus] = useState(null)
-  const {receivedInvites,acceptInvite} = useAuth()
+  const {acceptInvite,rejectInvite} = useControls()
+  const {receivedInvites} = useAuth()
   const classes = useStyles()
   const handleAccept = async (data,id) =>{
     const message = await acceptInvite(data,id)
     setStatus(message)
   }
   const handleReject = async (data,id) =>{
-    const message = await acceptInvite(data,id)
+    const message = await rejectInvite(data,id)
     setStatus(message)
   }
   const userInvites = 
@@ -104,7 +106,7 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
                 ?
                   userInvites:
                 <>
-                  <img src={notFound} style={{width:"200px", marginBottom:"30px"}} />
+                  <img src={notFound} style={{width:"200px", marginBottom:"30px"}} alt="Not found" />
                   <Typography variant="caption"> No New Invite</Typography>
                 </>
             }  
@@ -116,7 +118,7 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
             autoHideDuration={3000}
             onClose={() => setStatus(null)}
         >
-          {status&&<Alert  severity={status.type=="success"?"success":"error"}sx={{ width: '100%' }}>
+          {status&&<Alert  severity={status.type==="success"?"success":"error"}sx={{ width: '100%' }}>
             {status.message}
         </Alert>}
       </Snackbar>

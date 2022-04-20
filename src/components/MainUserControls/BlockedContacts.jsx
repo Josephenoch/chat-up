@@ -4,6 +4,8 @@ import {Modal, Box, Paper, Typography, Avatar, Button, IconButton, Snackbar, Ale
 import { makeStyles } from '@mui/styles'
 import { CancelOutlined } from '@mui/icons-material'
 import { useAuth } from '../../contexts/AuthContext'
+import { useControls } from '../../contexts/ControlsContext'
+
 
 import notFound from "../../assets/notFound.svg"
 
@@ -34,13 +36,17 @@ const useStyles = makeStyles({
 })
 
 export const BlockedContacts = ({blockedContactsModal, handleBlockedContactsModal}) => {
-  const {contacts, unBlockUser} = useAuth()
+  const {contacts} = useAuth()
+  const {unblockContact, deleteContact} = useControls()
   const blockedContacts = contacts.filter(contact => contact.data.blocked === true)
   const [status, setStatus] = useState(null)
   const classes = useStyles()
   const handleUnblock = async (id) =>{
-    const stat = await unBlockUser(id)
+    const stat = await unblockContact(id)
     setStatus(stat)
+  }
+  const handleDelete =  async (email,id) => {
+    await deleteContact(email,id)
   }
   const Blocked = 
     blockedContacts.map(contact=>
@@ -65,7 +71,7 @@ export const BlockedContacts = ({blockedContactsModal, handleBlockedContactsModa
             color="secondary" 
             size="small" 
             variant="outlined"
-            // onClick={()=>handleInvite(invite.id)}
+            onClick={()=>handleDelete(contact.data.sender,contact.id)}
         >
             Delete
         </Button>
@@ -99,7 +105,7 @@ export const BlockedContacts = ({blockedContactsModal, handleBlockedContactsModa
                 ?
                   Blocked:
                 <>
-                  <img src={notFound} style={{width:"200px", marginBottom:"30px"}} />
+                  <img src={notFound} style={{width:"200px", marginBottom:"30px"}} alt="Not Found"/>
                   <Typography variant="caption"> No Blocked Contacts</Typography>
                 </>
             }  
@@ -110,7 +116,7 @@ export const BlockedContacts = ({blockedContactsModal, handleBlockedContactsModa
             autoHideDuration={3000}
             onClose={() => setStatus(null)}
         >
-          {status&&<Alert  severity={status.type=="success"?"success":"error"}sx={{ width: '100%' }}>
+          {status&&<Alert  severity={status.type==="success"?"success":"error"}sx={{ width: '100%' }}>
             {status.message}
         </Alert>}
       </Snackbar>

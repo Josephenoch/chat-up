@@ -1,15 +1,15 @@
 import React,{useState} from 'react';
-import {Menu, MenuItem, Alert, Snackbar} from '@mui/material'
+import {Menu, MenuItem} from '@mui/material'
 import { DeleteModal } from './DeleteModal';
 import { BlockModal } from './BlockModal';
-import { useAuth } from '../../contexts/AuthContext';
 
+import { useControls } from '../../contexts/ControlsContext';
 
 export const OtherUserMenu = ({menu,closeMenu,anchorEl,contactId,email}) => {
   const [deleteModal, setDeleteModal] = useState(false)
   const [blockModal, setBlockModal] = useState(false)
 
-  const {blockUser, deleteUser} = useAuth()
+  const {blockContact, deleteContact} = useControls()
   const handleDeleteModal = () =>{
       setDeleteModal(!deleteModal)
       closeMenu()
@@ -19,11 +19,11 @@ export const OtherUserMenu = ({menu,closeMenu,anchorEl,contactId,email}) => {
       closeMenu()
   }
   const handleBlock = async () =>{
-    await blockUser(contactId)
+    await blockContact(contactId)
     setBlockModal(!blockModal)
   }
   const handleDelete = async () => {
-    await deleteUser(email,contactId)
+    await deleteContact(email,contactId)
   }
   return (
     <>

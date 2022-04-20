@@ -1,9 +1,9 @@
 import React from 'react'
-import { Navigate, Outlet, Route } from 'react-router-dom'
-import { useChats } from '../contexts/ChatsContext'
+import { Navigate} from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
 export const PublicRoute = ({children}) => {
-    const {user} = useChats()
+    const {mainUser} = useAuth()
   
-    return !user ? children : <Navigate to="/chats"/>
+    return !mainUser ? children : <Navigate to="/chats"/>
 }

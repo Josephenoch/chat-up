@@ -5,9 +5,8 @@ import {Box, IconButton} from "@mui/material"
 import { EmojiEmotionsOutlined } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles'
 import { Emoji } from '../Emoji'
-import { useAuth } from '../../contexts/AuthContext'
-import {faker} from '@faker-js/faker'
 import {serverTimestamp } from "firebase/firestore";
+import { useControls } from '../../contexts/ControlsContext'
 
 const useStyles = makeStyles({
     root:{
@@ -41,7 +40,7 @@ export const SendMessage = ({contact}) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const [modal, setModal] = useState(false)
-  const {sendMessage} = useAuth()
+  const {sendMessage} = useControls()
   const classes = useStyles() 
   const handleModal = (e) => {
     setAnchorEl(e.currentTarget)

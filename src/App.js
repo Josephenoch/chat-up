@@ -3,7 +3,7 @@ import "./App.css"
 
 import { Sidebar } from "./components/Sidebar/Sidebar";
 import { Chats } from "./components/Chats/Chats";
-import { ChatsProvider } from "./contexts/ChatsContext";
+import { ControlsProvider } from "./contexts/ControlsContext";
 
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider,createTheme  } from "@mui/material/styles";
@@ -32,7 +32,7 @@ export const App = () => {
     <Box className="app">
       <ThemeProvider theme={theme}>
         <AuthProvider>
-          <ChatsProvider>
+          <ControlsProvider>
             <Routes>
               <Route index element={<LandingPage/>}/>
               <Route path="signin" element={
@@ -53,7 +53,7 @@ export const App = () => {
                   }/>
               </Route>
             </Routes>
-          </ChatsProvider>
+          </ControlsProvider>
         </AuthProvider>
       </ThemeProvider>
     </Box>

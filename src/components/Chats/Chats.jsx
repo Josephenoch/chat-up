@@ -6,9 +6,8 @@ import { makeStyles } from '@mui/styles'
 import {UserHeader} from "../UserHeader"
 import { Message } from './Message'
 import { SendMessage } from "./SendMessage"
-import { useChats } from "../../contexts/ChatsContext"
 
-import { useParams , useLocation} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import "./chats.css"
 import { onSnapshot,collection,query, orderBy } from "firebase/firestore"
 import { db } from "../../firebase-config"
@@ -44,7 +43,6 @@ const useStyles = makeStyles({
 
 export const Chats = () => {
   const classes = useStyles()
-  const {user} = useChats()
   const {contacts,mainUser} = useAuth()
   const {roomId} = useParams()
   const [loading, setLoading] = useState(true)
@@ -76,7 +74,7 @@ export const Chats = () => {
     if(contact && !contact.data.blocked){
         endDiv.current.scrollIntoView()
     }
-  },[user])
+  },[mainUser])
   useEffect(()=>{
     if(contact && !contact.data.blocked){
         endDiv.current.scrollIntoView()

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import { useChats } from '../contexts/ChatsContext'
+import { useAuth } from '../contexts/AuthContext'
 
 export const ProtectedRoute = ({children}) => {
-    const {user} = useChats()
+    const {mainUser} = useAuth()
 
-    return user? children :<Navigate to="/signin"/>
+    return mainUser? children :<Navigate to="/signin"/>
 }

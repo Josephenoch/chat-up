@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { makeStyles } from '@mui/styles'
 import { Modal, Typography, Paper, TextField, Button, FormGroup, Snackbar, Alert } from '@mui/material'
-import { useAuth } from '../../contexts/AuthContext'
+import { useControls } from '../../contexts/ControlsContext'
 
 const useStyles = makeStyles({
   modalContainer:{
@@ -24,13 +24,13 @@ const useStyles = makeStyles({
 
 export const AddContact = ({addCntctModal, handleAddCntctModal}) => {
   const classes = useStyles()
-  const {mainUser,addUser} = useAuth()
+  const {mainUser,sendInvite} = useControls()
   const [status, setStatus] = useState(null)
   const [email, setEmail] = useState("")
   const handleSubmit = async (e) =>{
       e.preventDefault()
       if(email!==mainUser.email){
-        const message = await addUser(email.toLowerCase())
+        const message = await sendInvite(email.toLowerCase())
         setStatus(message)
       }
       else{
@@ -81,7 +81,7 @@ export const AddContact = ({addCntctModal, handleAddCntctModal}) => {
             autoHideDuration={3000}
             onClose={() => setStatus(null)}
         >
-          {status&&<Alert  severity={status.type=="success"?"success":"error"}sx={{ width: '100%' }}>
+          {status&&<Alert  severity={status.type==="success"?"success":"error"}sx={{ width: '100%' }}>
             {status.message}
         </Alert>}
       </Snackbar>

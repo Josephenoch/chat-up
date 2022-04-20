@@ -3,14 +3,12 @@ import { UserHeader } from '../UserHeader'
 import { makeStyles } from '@mui/styles';
 import { SidebarSearch } from './SidebarSearch';
 
-import { useChats } from "../../contexts/ChatsContext";
 
 import {ChatContact } from './ChatContact';
 import {Contact } from './Contact';
 
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet} from "react-router-dom";
 import "./sidebar.css"
-import { NoActiveChat } from "../Chats/NoActiveChat";
 import { useAuth } from "../../contexts/AuthContext";
 import { useState } from "react";
 import { SidebarSwitch } from "./SidebarSwitch";
@@ -23,7 +21,7 @@ const useStyles = makeStyles({
 })  
 
 export const Sidebar = () => {
-  const {user} = useChats()
+  const {mainUser} = useAuth()
   const {contacts} = useAuth()
   const classes = useStyles()
   const [normalContact, setNormalContact] = useState(true)
@@ -32,7 +30,7 @@ export const Sidebar = () => {
     <Box className="sideBar">
       <Box >
           <UserHeader
-            user={user}
+            user={mainUser}
             mainUser={true}
           />
           <SidebarSearch/>
