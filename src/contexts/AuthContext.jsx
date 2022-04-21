@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 
 import { createContext, useContext} from 'react'
 import { doc, getDoc, setDoc, collection, addDoc,  serverTimestamp, onSnapshot, orderBy } from "firebase/firestore"; 
@@ -13,13 +13,36 @@ export const useAuth = () => {
     return useContext(AuthContext)
 }
 export const AuthProvider = ({children}) => {
-  const [mainUser, setMainUser] = useState(null)
+  const user = window.localStorage.getItem('mainUser')
+  const [mainUser, setMainUser] = useState()
+  const [loading, setLoading] = useState(false)
   const [contacts, setContacts] = useState([])
   const [receivedInvites, setReceivedInvites] = useState([])
+  useEffect(()=>{
+    const getUserData = async () =>{
+      const document = await getDoc(doc(db, "user", user))
+      await onSnapshot((collection(db, `user/${user}/contacts`)), orderBy("timeStamp"),cntcts =>{
+        setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
+      })
+      await onSnapshot((collection(db, `user/${user}/receivedInvites`)),invites=>{
+        setReceivedInvites(invites.docs.map(invite => ({id:invite.id, data:invite.data()})))
+      })
+      setMainUser(document.data())
+      setLoading(false)
+    }
+    if(user){
+      setLoading(true)
+      getUserData()
+      
+    }
+  },[])
 
   const signIn = async () =>{
     const result = await signInWithPopup(auth, provider)
+    setLoading(true)
     const document = await getDoc(doc(db, "user", result.user.email))
+    window.localStorage.setItem('mainUser',result.user.email)
+
     if(!document.exists()){
       await setDoc(doc(collection(db,"user"), result.user.email),{
         displayName:result.user.displayName,
@@ -61,22 +84,29 @@ export const AuthProvider = ({children}) => {
       setReceivedInvites(invites.docs.map(invite => ({id:invite.id, data:invite.data()})))
     })
   
-
     setMainUser({
       email:result.user.email,
       displayName:result.user.displayName,
       photoURL:result.user.photoURL
     })
+    setLoading(false)
   }
   
+  const logout = ()=>{
+    localStorage.removeItem("mainUser")
+    setMainUser(null)
+    
+  }
   
   const value = {
       signIn,
       mainUser,
+      loading,
       contacts,
       receivedInvites,
-      
+      logout
   } 
+  localStorage.removeItem("user")
   return (
     <AuthContext.Provider value={value}>
         {children}

@@ -7,12 +7,11 @@ import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/styles';
 
-import { onSnapshot,collection,doc, query, orderBy } from "firebase/firestore"
+import { onSnapshot,collection, query, orderBy } from "firebase/firestore"
 import { db } from "../../firebase-config"
 import { useAuth } from '../../contexts/AuthContext';
 
 import { CircleSpinner } from "react-spinners-kit";
-// import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     rootContainer:{
