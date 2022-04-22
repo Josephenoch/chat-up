@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import {Avatar, Box, Typography, Paper} from "@mui/material"
-import { DoneAll } from '@mui/icons-material';
+
 import { makeStyles } from '@mui/styles';
 
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/styles';
 
-import { onSnapshot,collection,doc, query, orderBy } from "firebase/firestore"
-import { db } from "../../firebase-config"
-import { useAuth } from '../../contexts/AuthContext';
-
-import { CircleSpinner } from "react-spinners-kit";
-// import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
     rootContainer:{
@@ -61,7 +55,7 @@ export const Contact = ({contact,id}) => {
         <Paper 
             className={classes.rootContainer} 
         >
-                
+            
             <Link 
                 to={`${id}`}
                 style={{

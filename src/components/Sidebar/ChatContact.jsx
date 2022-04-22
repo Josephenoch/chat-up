@@ -78,6 +78,11 @@ export const ChatContact = ({contact,id}) => {
     const ContactContent = 
     <Paper 
         className={classes.rootContainer} 
+        sx={{
+            display: loading&&"flex",
+            justifyContent:"center",
+            alignItems:"center"
+        }}
     >
             
         {loading?

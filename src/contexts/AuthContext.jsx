@@ -1,10 +1,10 @@
 import React,{useEffect, useState} from 'react'
 
 import { createContext, useContext} from 'react'
-import { doc, getDoc, setDoc, collection, addDoc,  serverTimestamp, onSnapshot, orderBy,  } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, collection, addDoc,  serverTimestamp, onSnapshot, orderBy, query } from "firebase/firestore"; 
 
 import { auth, provider, } from '../firebase-config';
-import {inMemoryPersistence, browserLocalPersistence, setPersistence, signInWithPopup, onAuthStateChanged} from "firebase/auth"
+import { browserLocalPersistence, setPersistence, signInWithPopup, onAuthStateChanged} from "firebase/auth"
 
 import { db } from '../firebase-config';
 const AuthContext = createContext()
@@ -18,13 +18,13 @@ export const AuthProvider = ({children}) => {
   const [contacts, setContacts] = useState([])
   const [receivedInvites, setReceivedInvites] = useState([])
   useEffect(()=>{
-   
+    setLoading(true)
     const getUserData = async () =>{
         onAuthStateChanged(auth, async user =>{
           if(user){
-            setLoading(true)
-            
-            await onSnapshot((collection(db, `user/${user.email}/contacts`)), orderBy("timeStamp"),cntcts =>{
+            const q = query(collection(db, `user/${user.email}/contacts`), orderBy("timeStamp","desc"))
+            console.log(q)
+            await onSnapshot(q,cntcts =>{
                 setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
               })
             await onSnapshot((collection(db, `user/${user.email}/receivedInvites`)),invites=>{
@@ -34,7 +34,7 @@ export const AuthProvider = ({children}) => {
             setLoading(false)
         }
 
-        })
+      })
     }
       getUserData()
       
