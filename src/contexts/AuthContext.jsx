@@ -4,7 +4,7 @@ import { createContext, useContext} from 'react'
 import { doc, getDoc, setDoc, collection, addDoc,  serverTimestamp, onSnapshot, orderBy, query } from "firebase/firestore"; 
 
 import { auth, provider, } from '../firebase-config';
-import { browserLocalPersistence, setPersistence, signInWithPopup, onAuthStateChanged} from "firebase/auth"
+import { browserLocalPersistence, setPersistence, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
 
 import { db } from '../firebase-config';
 const AuthContext = createContext()
@@ -18,21 +18,24 @@ export const AuthProvider = ({children}) => {
   const [contacts, setContacts] = useState([])
   const [receivedInvites, setReceivedInvites] = useState([])
   useEffect(()=>{
-    setLoading(true)
     const getUserData = async () =>{
+      setLoading(true)
         onAuthStateChanged(auth, async user =>{
           if(user){
-            const q = query(collection(db, `user/${user.email}/contacts`), orderBy("timeStamp","desc"))
-            console.log(q)
+            let q = query(collection(db, `user/${user.email}/contacts`), orderBy("timeStamp","desc"))
             await onSnapshot(q,cntcts =>{
                 setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
               })
-            await onSnapshot((collection(db, `user/${user.email}/receivedInvites`)),invites=>{
+            let b = query(collection(db, `user/${user.email}/receivedInvites`), orderBy("timeStamp"))
+            await onSnapshot(b,invites=>{
               setReceivedInvites(invites.docs.map(invite => ({id:invite.id, data:invite.data()})))
             })
+            await setDoc(doc(db, "user",user.email),{
+              lastSeen:"online"
+            })
             setMainUser(user)
-            setLoading(false)
         }
+        setLoading(false)
 
       })
     }
@@ -41,11 +44,6 @@ export const AuthProvider = ({children}) => {
   },[])
 
   const signIn = async () =>{
-    // {
-    //   displayName:auth.currentUser.displayName,
-    //   photoURL:auth.currentUser.photoURL,
-    //   email:auth.currentUser.email
-    // }
     const res = setPersistence(auth, browserLocalPersistence)
     .then(() => {
       return signInWithPopup(auth, provider)
@@ -87,7 +85,9 @@ export const AuthProvider = ({children}) => {
         }
       )
     }
-
+    await setDoc(doc(db, "user",result.user.email),{
+      lastSeen:"online"
+    })
     await onSnapshot((collection(db, `user/${result.user.email}/contacts`)), orderBy("timeStamp"),cntcts =>{
       setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
     })
@@ -103,12 +103,16 @@ export const AuthProvider = ({children}) => {
     setLoading(false)
   }
   
-  const logout = ()=>{
-    localStorage.removeItem("mainUser")
+  const logout = async ()=>{
+    await setDoc(doc(db, "user", mainUser.email),{
+      lastSeen:serverTimestamp()
+    })
+    signOut(auth)
     setMainUser(null)
+    setContacts(null)
+    setReceivedInvites(null)
     
   }
-  console.log(contacts)
   const value = {
       signIn,
       mainUser,
@@ -117,6 +121,12 @@ export const AuthProvider = ({children}) => {
       receivedInvites,
       logout
   } 
+  window.addEventListener('beforeunload', async ()=> {
+    await setDoc(doc(db, "user", mainUser.email),{
+      lastSeen:serverTimestamp()
+    })
+    
+});
   localStorage.removeItem("user")
   return (
     <AuthContext.Provider value={value}>

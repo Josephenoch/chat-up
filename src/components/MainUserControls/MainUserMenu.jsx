@@ -32,7 +32,7 @@ export const MainUserMenu = ({menu,closeMenu,anchorEl}) => {
       >
         <MenuItem onClick={handleInviteModal}>View Invites</MenuItem>
         <MenuItem onClick={handleBlockedContactsModal}>View Blocked Contacts</MenuItem>
-        <MenuItem onClick={logout}>Logout</MenuItem>
+        <MenuItem onClick={async ()=>await logout()}>Logout</MenuItem>
       </Menu>
       <UserInvitesModal
         inviteModal={inviteModal}

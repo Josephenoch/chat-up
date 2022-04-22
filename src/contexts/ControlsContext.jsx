@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react'
-import { doc, getDoc, setDoc, collection, getDocs, updateDoc, addDoc, where, query, deleteDoc } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, collection, getDocs, updateDoc, addDoc, where, query, deleteDoc, serverTimestamp } from "firebase/firestore"; 
 
 import { db } from '../firebase-config';
 import { useAuth } from './AuthContext';
@@ -42,6 +42,7 @@ export const ControlsProvider = ({children}) => {
 
     const sendInvite = async (email)=>{
         const document = await getDoc(doc(db, "user", email))
+        console.log(mainUser)
         if(document.exists()){
             const doc1 = await getDocs(query(collection(db, `user/${mainUser.email}/contacts`), where("sender","==",email)))
             if(doc1.docs.length<1){
@@ -53,11 +54,13 @@ export const ControlsProvider = ({children}) => {
                             sender:mainUser.email,
                             displayName:mainUser.displayName,
                             photoURL:mainUser.photoURL,
+                            timeStamp: serverTimestamp()
                         })
                         await setDoc(doc(collection(db, `user/${mainUser.email}/sentInvites`)),{
                             receiver:email,
                             displayName:document.data().displayName,
                             photoURL:document.data().photoURL,
+                            timeStamp: serverTimestamp()
                         })
                         const message = {
                             type:"success",
@@ -96,16 +99,18 @@ export const ControlsProvider = ({children}) => {
             displayName:invite.displayName,
             photoURL:invite.photoURL,
             blocked:false,
+            timeStamp:null
         })
         await setDoc(doc(collection(db, `user/${invite.sender}/contacts`)),{
             sender:mainUser.email,
             displayName:mainUser.displayName,
             photoURL:mainUser.photoURL,
             blocked:false,
+            timeStamp:null
         })
         await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, id));
         const doc1 = await getDocs(query(collection(db, `user/${invite.sender}/sentInvites`), where("receiver","==",mainUser.email)))
-        await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, doc1.docs.id));
+        await deleteDoc(doc(db, `user/${mainUser.email}/receivedInvites`, doc1.docs[0].id));
         return {
             type:"success",
             message:"Contact succesfully accepted"

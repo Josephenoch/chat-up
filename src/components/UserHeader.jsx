@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     }
 })
 
-export const UserHeader = ({user,mainUser,userID}) => {
+export const UserHeader = ({user,mainUser,userID,lastSeen}) => {
   const classes = useStyles()
   const [mainUserMenu, setMainUserMenu] = useState(false)
   const [mainUserAnchorEl, setMainUserAnchorEl] = useState(false)
@@ -70,6 +70,13 @@ export const UserHeader = ({user,mainUser,userID}) => {
             >
                 {`${user.displayName}`}
             </Typography>
+            {!mainUser&&
+                <Typography
+                    variant="caption"
+                >
+                    {lastSeen}
+                </Typography>
+            }
         </Box>
         
         <Box 

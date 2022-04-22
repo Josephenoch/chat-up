@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { makeStyles } from '@mui/styles'
 import { Modal, Typography, Paper, TextField, Button, FormGroup, Snackbar, Alert } from '@mui/material'
 import { useControls } from '../../contexts/ControlsContext'
+import { useAuth } from '../../contexts/AuthContext'
 
 const useStyles = makeStyles({
   modalContainer:{
@@ -24,7 +25,8 @@ const useStyles = makeStyles({
 
 export const AddContact = ({addCntctModal, handleAddCntctModal}) => {
   const classes = useStyles()
-  const {mainUser,sendInvite} = useControls()
+  const {mainUser} = useAuth()
+  const {sendInvite} = useControls()
   const [status, setStatus] = useState(null)
   const [email, setEmail] = useState("")
   const handleSubmit = async (e) =>{

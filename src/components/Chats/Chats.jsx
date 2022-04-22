@@ -9,7 +9,7 @@ import { SendMessage } from "./SendMessage"
 
 import { useParams } from 'react-router-dom'
 import "./chats.css"
-import { onSnapshot,collection,query, orderBy } from "firebase/firestore"
+import { onSnapshot,collection,query, orderBy, doc } from "firebase/firestore"
 import { db } from "../../firebase-config"
 import { NoActiveChat } from "./NoActiveChat"
 import { useAuth } from "../../contexts/AuthContext"
@@ -47,10 +47,11 @@ export const Chats = () => {
   const {roomId} = useParams()
   const [loading, setLoading] = useState(true)
   const [messages, setMessages] = useState()
-  
+  const [lastSeen, setLastSeen] = useState()
   const endDiv = useRef(null)
 
   const contact = contacts.filter(contact => contact.id===roomId)[0]
+
 
   useEffect(()=>{
     const fetchData = async () =>{
@@ -65,7 +66,14 @@ export const Chats = () => {
             setMessages(array1)
             setLoading(false)
         })
-        
+        await onSnapshot(doc(db,"user",contact.data.sender),user=>{
+            if(user.data().lastSeen==="online"){
+                setLastSeen(user.data().lastSeen)
+            }
+            else{
+                setLastSeen(new Date(user.data().lastSeen?.toDate()).toUTCString())
+            }
+        })
     }
     fetchData()
 },[roomId])
@@ -93,7 +101,7 @@ export const Chats = () => {
                         <UserHeader
                             user={contact.data}
                             userID={contact.id}
-
+                            lastSeen={lastSeen}
                         />
                     </Box>
                     <Box
