@@ -1,10 +1,10 @@
 import React,{useEffect, useState} from 'react'
 
 import { createContext, useContext} from 'react'
-import { doc, getDoc, setDoc, collection, addDoc,  serverTimestamp, onSnapshot, orderBy } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, collection, addDoc,  serverTimestamp, onSnapshot, orderBy,  } from "firebase/firestore"; 
 
 import { auth, provider, } from '../firebase-config';
-import {signInWithPopup} from "firebase/auth"
+import {inMemoryPersistence, browserLocalPersistence, setPersistence, signInWithPopup, onAuthStateChanged} from "firebase/auth"
 
 import { db } from '../firebase-config';
 const AuthContext = createContext()
@@ -12,36 +12,47 @@ const AuthContext = createContext()
 export const useAuth = () => {
     return useContext(AuthContext)
 }
-export const AuthProvider = ({children}) => {
-  const user = window.localStorage.getItem('mainUser')
+export const AuthProvider = ({children}) => {  
   const [mainUser, setMainUser] = useState()
   const [loading, setLoading] = useState(false)
   const [contacts, setContacts] = useState([])
   const [receivedInvites, setReceivedInvites] = useState([])
   useEffect(()=>{
+   
     const getUserData = async () =>{
-      const document = await getDoc(doc(db, "user", user))
-      await onSnapshot((collection(db, `user/${user}/contacts`)), orderBy("timeStamp"),cntcts =>{
-        setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
-      })
-      await onSnapshot((collection(db, `user/${user}/receivedInvites`)),invites=>{
-        setReceivedInvites(invites.docs.map(invite => ({id:invite.id, data:invite.data()})))
-      })
-      setMainUser(document.data())
-      setLoading(false)
+        onAuthStateChanged(auth, async user =>{
+          if(user){
+            setLoading(true)
+            
+            await onSnapshot((collection(db, `user/${user.email}/contacts`)), orderBy("timeStamp"),cntcts =>{
+                setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
+              })
+            await onSnapshot((collection(db, `user/${user.email}/receivedInvites`)),invites=>{
+              setReceivedInvites(invites.docs.map(invite => ({id:invite.id, data:invite.data()})))
+            })
+            setMainUser(user)
+            setLoading(false)
+        }
+
+        })
     }
-    if(user){
-      setLoading(true)
       getUserData()
       
-    }
   },[])
 
   const signIn = async () =>{
-    const result = await signInWithPopup(auth, provider)
+    // {
+    //   displayName:auth.currentUser.displayName,
+    //   photoURL:auth.currentUser.photoURL,
+    //   email:auth.currentUser.email
+    // }
+    const res = setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+      return signInWithPopup(auth, provider)
+    })
+    const result = await res
     setLoading(true)
     const document = await getDoc(doc(db, "user", result.user.email))
-    window.localStorage.setItem('mainUser',result.user.email)
 
     if(!document.exists()){
       await setDoc(doc(collection(db,"user"), result.user.email),{
@@ -97,7 +108,7 @@ export const AuthProvider = ({children}) => {
     setMainUser(null)
     
   }
-  
+  console.log(contacts)
   const value = {
       signIn,
       mainUser,
