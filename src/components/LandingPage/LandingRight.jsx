@@ -25,6 +25,7 @@ export const LandingRight = () => {
                     width:"500px",
                     zIndex:"1"
                 }}
+                alt="Landing page"
             />
     </Box>
   )

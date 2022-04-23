@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Paper, Box, Typography,} from '@mui/material'
+import { Paper, Box} from '@mui/material'
 import { useTheme, makeStyles } from '@mui/styles'
 
 import { LandingHeader } from './LandingHeader'

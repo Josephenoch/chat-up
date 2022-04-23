@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react'
-import { doc, getDoc, setDoc, collection, getDocs, updateDoc, addDoc, where, query, deleteDoc, serverTimestamp } from "firebase/firestore"; 
+import { doc, getDoc, setDoc, collection, getDocs, updateDoc, addDoc, where, query, deleteDoc, serverTimestamp, increment } from "firebase/firestore"; 
 
 import { db } from '../firebase-config';
 import { useAuth } from './AuthContext';
@@ -24,18 +24,20 @@ export const ControlsProvider = ({children}) => {
             id:sentByData.docs[0].id
         }
         await updateDoc(doc(db, `user/${mainUser.email}/contacts/`,contact.id),{
-            timeStamp: message.timeStamp
+            timeStamp: message.timeStamp,
         })
         await addDoc(collection(db, `user/${mainUser.email}/contacts/${contact.id}/messages`,),
             {...message}
         )
         if(!sentBy.data.blocked){
             await updateDoc(doc(db, `user/${sentTo.data.sender}/contacts/`,sentBy.id),{
-            timeStamp: message.timeStamp
+                timeStamp: message.timeStamp,
+                unReadMessages: increment(1)
             })
             await addDoc(collection(db, `user/${sentTo.data.sender}/contacts/${sentBy.id}/messages`,),{
-            ...message, sentByMainUser:false
+                ...message, sentByMainUser:false
             })
+
         }
     
     }

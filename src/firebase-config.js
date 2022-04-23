@@ -1,19 +1,18 @@
 import {initializeApp} from "firebase/app"
 import {getFirestore} from "@firebase/firestore"
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { setPersistence, signInWithPopup, browserLocalPersistence} from "firebase/auth"
 
 
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyDKII12qWxgqwmR8Ut9MHHL6rhkI5N51Jk",
-    authDomain: "whatsapp-clone-62e92.firebaseapp.com",
-    projectId: "whatsapp-clone-62e92",
-    storageBucket: "whatsapp-clone-62e92.appspot.com",
-    messagingSenderId: "632581599147",
-    appId: "1:632581599147:web:6ace34a135a2cb7453ecee",
-    measurementId: "G-GYJEYHRC8G"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
   };
 
 const app = initializeApp(firebaseConfig);

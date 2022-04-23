@@ -9,7 +9,7 @@ import { SendMessage } from "./SendMessage"
 
 import { useParams } from 'react-router-dom'
 import "./chats.css"
-import { onSnapshot,collection,query, orderBy, doc } from "firebase/firestore"
+import { onSnapshot,collection,query, orderBy, doc,} from "firebase/firestore"
 import { db } from "../../firebase-config"
 import { NoActiveChat } from "./NoActiveChat"
 import { useAuth } from "../../contexts/AuthContext"
@@ -77,12 +77,13 @@ export const Chats = () => {
     }
     fetchData()
 },[roomId])
+
  
   useEffect(()=>{
     if(contact && !contact.data.blocked){
         endDiv.current.scrollIntoView()
     }
-  },[mainUser])
+  },[roomId])
   useEffect(()=>{
     if(contact && !contact.data.blocked){
         endDiv.current.scrollIntoView()

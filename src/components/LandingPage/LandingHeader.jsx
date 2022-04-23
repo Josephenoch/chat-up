@@ -4,7 +4,6 @@ import { Typography, Box, Button } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { useTheme} from '@mui/styles'
 
-
 import { Link } from 'react-router-dom'
 
 export const LandingHeader = () => {

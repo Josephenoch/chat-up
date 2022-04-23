@@ -17,31 +17,32 @@ export const AuthProvider = ({children}) => {
   const [loading, setLoading] = useState(false)
   const [contacts, setContacts] = useState([])
   const [receivedInvites, setReceivedInvites] = useState([])
-  useEffect(()=>{
-    const getUserData = async () =>{
-      setLoading(true)
-        onAuthStateChanged(auth, async user =>{
-          if(user){
-            let q = query(collection(db, `user/${user.email}/contacts`), orderBy("timeStamp","desc"))
-            await onSnapshot(q,cntcts =>{
-                setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
-              })
-            let b = query(collection(db, `user/${user.email}/receivedInvites`), orderBy("timeStamp"))
-            await onSnapshot(b,invites=>{
-              setReceivedInvites(invites.docs.map(invite => ({id:invite.id, data:invite.data()})))
-            })
-            await setDoc(doc(db, "user",user.email),{
-              lastSeen:"online"
-            })
-            setMainUser(user)
-        }
-        setLoading(false)
+  // useEffect(()=>{
+  //   const getUserData = async () =>{
+  //     setLoading(true)
+  //       onAuthStateChanged(auth, async user =>{
+  //         console.log(user)
+  //         if(user){
+  //           let q = query(collection(db, `user/${user.email}/contacts`), orderBy("timeStamp","desc"))
+  //           await onSnapshot(q,cntcts =>{
+  //               setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
+  //             })
+  //           let b = query(collection(db, `user/${user.email}/receivedInvites`), orderBy("timeStamp"))
+  //           await onSnapshot(b,invites=>{
+  //             setReceivedInvites(invites.docs.map(invite => ({id:invite.id, data:invite.data()})))
+  //           })
+  //           await setDoc(doc(db, "user",user.email),{
+  //             lastSeen:"online"
+  //           })
+  //           setMainUser(user)
+  //       }
+  //       setLoading(false)
 
-      })
-    }
-      getUserData()
+  //     })
+  //   }
+  //     getUserData()
       
-  },[])
+  // },[])
 
   const signIn = async () =>{
     const res = setPersistence(auth, browserLocalPersistence)
@@ -51,6 +52,7 @@ export const AuthProvider = ({children}) => {
     const result = await res
     setLoading(true)
     const document = await getDoc(doc(db, "user", result.user.email))
+
 
     if(!document.exists()){
       await setDoc(doc(collection(db,"user"), result.user.email),{
@@ -125,10 +127,8 @@ export const AuthProvider = ({children}) => {
     await setDoc(doc(db, "user", mainUser.email),{
       lastSeen:serverTimestamp()
     })
-    
-});
-  localStorage.removeItem("user")
-  return (
+  });
+    return (
     <AuthContext.Provider value={value}>
         {children}
     </AuthContext.Provider>
