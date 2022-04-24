@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import {Avatar, Box, Typography, Paper} from "@mui/material"
+import {Avatar, Box, Typography, Paper, Badge} from "@mui/material"
 import { DoneAll } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 
@@ -61,6 +61,7 @@ export const ChatContact = ({contact,id}) => {
   const classes = useStyles()
   useEffect(()=>{
         if(contact.timeStamp!==""){
+            console.log(contact)
             const fetchData = async () =>{
                 const q = query(collection(db,`user/${mainUser.email}/contacts/${id}/messages`), orderBy("timeStamp"))
                 await onSnapshot(q,snapShot=>{
@@ -138,6 +139,19 @@ export const ChatContact = ({contact,id}) => {
                     >
                         {new Date(message.data.timeStamp?.toDate()).toUTCString()}
                     </Typography>
+                    
+
+                </Box>
+                <Box
+                    sx={{
+                        marginTop:"20px",
+                        marginRight:"2%"
+                    }}
+                >
+                    <Badge 
+                        color="primary" 
+                        badgeContent={contact.unReadMessages}
+                    />
                 </Box>
 
             </Box>

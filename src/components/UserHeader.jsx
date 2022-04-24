@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 
-import {Box, Avatar, Typography, IconButton} from "@mui/material"
+import {Box, Avatar, Typography, IconButton, Badge} from "@mui/material"
 import { makeStyles } from '@mui/styles'
 import { Add, MoreHoriz } from '@mui/icons-material'
 
@@ -8,6 +8,7 @@ import {MainUserMenu} from "./MainUserControls/MainUserMenu"
 import {OtherUserMenu} from "./OtherUserControls/OtherUserMenu"
 
 import { AddContact } from './MainUserControls/AddContact'
+import { useAuth } from '../contexts/AuthContext'
 
 
 const useStyles = makeStyles({
@@ -29,6 +30,7 @@ export const UserHeader = ({user,mainUser,userID,lastSeen}) => {
   const [addCntctModal, setAddCntctModal] = useState(false)
   const [otherUserMenu, setOtherUserMenu] = useState(false)
   const [otherUserAnchorEl, setOtherUserAnchorEl] = useState(false)
+  const {receivedInvites} = useAuth()
   const handleAddCntctModal = () => {
     closeMainUserMenu()
     setAddCntctModal(!addCntctModal)
@@ -106,9 +108,22 @@ export const UserHeader = ({user,mainUser,userID,lastSeen}) => {
                 closeMenu={closeOtherUserMenu}
                 anchorEl={otherUserAnchorEl}
             />
-            <IconButton onClick={mainUser?(e)=>openMainUserMenu(e):(e)=>openOtherUserMenu(e)}>
-                <MoreHoriz/>
-            </IconButton>
+            {mainUser?
+                
+                <IconButton onClick={(e)=>openMainUserMenu(e)}>
+                    <Badge
+                        color="primary" 
+                        badgeContent={receivedInvites.length}
+                    >
+                        <MoreHoriz/>
+                    </Badge>
+                </IconButton>
+                :
+                <IconButton onClick={(e)=>openOtherUserMenu(e)}>
+                    <MoreHoriz/>
+                </IconButton>
+            }
+            
         </Box>
         <AddContact
             addCntctModal={addCntctModal}
