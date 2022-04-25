@@ -24,14 +24,11 @@ const useStyles = makeStyles({
     userHeaderBox:{
         width:"100%",
         zIndex:"99",
-        
-        
     },
     messageBox:{
         maxHeight:"85vh",
         minHeight:"85vh",
-        overflowY:"auto",
-        
+        overflowY:"auto",    
     },
     sendBox:{
         width:"100%",

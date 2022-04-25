@@ -15,6 +15,7 @@ export const useAuth = () => {
 export const AuthProvider = ({children}) => {  
   const [mainUser, setMainUser] = useState()
   const [loading, setLoading] = useState(false)
+  const [disabled, setDisabled] = useState(false)
   const [contacts, setContacts] = useState([])
   const [receivedInvites, setReceivedInvites] = useState([])
   useEffect(()=>{
@@ -81,11 +82,12 @@ export const AuthProvider = ({children}) => {
   },[])
 
   const signIn = async () =>{
+    setDisabled(true)
     await setPersistence(auth, browserLocalPersistence)
     .then(() => {
       return signInWithPopup(auth, provider)
     })
-
+    setDisabled(false)
     
   }
   
@@ -96,8 +98,7 @@ export const AuthProvider = ({children}) => {
     signOut(auth)
     setMainUser(null)
     setContacts(null)
-    setReceivedInvites(null)
-    
+    setReceivedInvites(null) 
   }
   const value = {
       signIn,
@@ -105,7 +106,8 @@ export const AuthProvider = ({children}) => {
       loading,
       contacts,
       receivedInvites,
-      logout
+      logout,
+      disabled
   } 
   window.addEventListener('beforeunload', async ()=> {
     await setDoc(doc(db, "user", mainUser.email),{
