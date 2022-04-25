@@ -83,11 +83,17 @@ export const AuthProvider = ({children}) => {
 
   const signIn = async () =>{
     setDisabled(true)
-    await setPersistence(auth, browserLocalPersistence)
-    .then(() => {
-      return signInWithPopup(auth, provider)
-    })
-    setDisabled(false)
+    try{
+      await setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        return signInWithPopup(auth, provider)
+      })
+    }
+    catch(err){
+      setDisabled(false)
+      return err.code
+    }
+    
     
   }
   

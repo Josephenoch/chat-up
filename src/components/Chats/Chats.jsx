@@ -6,17 +6,21 @@ import { makeStyles } from '@mui/styles'
 import {UserHeader} from "../UserHeader"
 import { Message } from './Message'
 import { SendMessage } from "./SendMessage"
+import { NoActiveChat } from "./NoActiveChat"
 
-import { useParams } from 'react-router-dom'
 import "./chats.css"
+
+import { useAuth } from "../../contexts/AuthContext"
+
 import { onSnapshot,collection,query, orderBy, doc, updateDoc,} from "firebase/firestore"
 import { db } from "../../firebase-config"
-import { NoActiveChat } from "./NoActiveChat"
-import { useAuth } from "../../contexts/AuthContext"
+
+import { useParams } from 'react-router-dom'
+
 import { CircleSpinner } from "react-spinners-kit";
 
-
 const useStyles = makeStyles({
+    // styles 
     root:{
         maxHeight:"100%",
         width:"70vw"
