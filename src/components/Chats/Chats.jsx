@@ -1,22 +1,30 @@
+// react imports
 import { useRef, useEffect, useState } from "react"
 
-import {Box} from "@mui/material"
+// mui imports
+import {Box, Snackbar, Alert} from "@mui/material"
 import { makeStyles } from '@mui/styles'
 
+// components imports
 import {UserHeader} from "../UserHeader"
 import { Message } from './Message'
 import { SendMessage } from "./SendMessage"
 import { NoActiveChat } from "./NoActiveChat"
 
+// css style import
 import "./chats.css"
 
+// contexts import
 import { useAuth } from "../../contexts/AuthContext"
 
+// firebase and firebase config file import
 import { onSnapshot,collection,query, orderBy, doc, updateDoc,} from "firebase/firestore"
 import { db } from "../../firebase-config"
 
+// react-router-dom imports
 import { useParams } from 'react-router-dom'
 
+// react-spinners-kit
 import { CircleSpinner } from "react-spinners-kit";
 
 const useStyles = makeStyles({
@@ -43,38 +51,53 @@ const useStyles = makeStyles({
 })
 
 export const Chats = () => {
+//   using mui styles
   const classes = useStyles()
-  const {contacts,mainUser} = useAuth()
+
+//   using the contacts array and mainUser object using the object destructing from the Auth context
+  const { contacts, mainUser } = useAuth()
+
+//   using the roomID parameter passed with the url from react-router-dom
   const {roomId} = useParams()
+
+//   state variables
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [messages, setMessages] = useState()
   const [lastSeen, setLastSeen] = useState()
+
+//   ref variables
   const endDiv = useRef(null)
 
+//   getting the particular contact from the contacts array using the roomId params
   const contact = contacts.filter(contact => contact.id===roomId)[0]
 
 
   useEffect(()=>{
     const fetchData = async () =>{
-        const q = query(collection(db,`user/${mainUser.email}/contacts/${roomId}/messages`), orderBy("timeStamp"))
-        await onSnapshot(q,snapShot=>{
-            const array1 = snapShot.docs.map(data=>({
-                
-                data:data.data(),
-                id:data.id
-                
-            }))
-            setMessages(array1)
-            setLoading(false)
-        })
-        await onSnapshot(doc(db,"user",contact.data.sender),user=>{
-            if(user.data().lastSeen==="online"){
-                setLastSeen(user.data().lastSeen)
-            }
-            else{
-                setLastSeen(new Date(user.data().lastSeen?.toDate()).toUTCString())
-            }
-        })
+        try{
+            const q = query(collection(db,`user/${mainUser.email}/contacts/${roomId}/messages`), orderBy("timeStamp"))
+            await onSnapshot(q,snapShot=>{
+                const array1 = snapShot.docs.map(data=>({
+                    
+                    data:data.data(),
+                    id:data.id
+                    
+                }))
+                setMessages(array1)
+                setLoading(false)
+            })
+            await onSnapshot(doc(db,"user",contact.data.sender),user=>{
+                if(user.data().lastSeen==="online"){
+                    setLastSeen(user.data().lastSeen)
+                }
+                else{
+                    setLastSeen(new Date(user.data().lastSeen?.toDate()).toUTCString())
+                }
+            })
+        }catch(err){
+            setError(err.code)
+        }
     }
     fetchData()
 },[roomId])
@@ -104,7 +127,7 @@ export const Chats = () => {
 
   if(contact && !contact.data.blocked){
         return (
-      
+        <>
             <Box className="chats">
                 <Box
                     className={classes.root}
@@ -141,6 +164,16 @@ export const Chats = () => {
                 </Box>
                 
             </Box>
+            <Snackbar
+                open={error}
+                autoHideDuration={3000}
+                onClose={() => setError(null)}
+            >
+                {error&&<Alert  severity="error"sx={{ width: '100%' }}>
+                    {error}
+                </Alert>}
+            </Snackbar>
+        </>
         )
     }
     else{

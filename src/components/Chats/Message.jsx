@@ -1,10 +1,13 @@
+// react imports
 import React from 'react'
 
+// mui imports
 import {Box, Typography} from "@mui/material"
 import { makeStyles } from '@mui/styles'
 
 
 const useStyles = makeStyles({
+    // styles
     rootContainer:{ 
         maxWidth:"60%",
         width:"auto",
@@ -37,6 +40,7 @@ const useStyles = makeStyles({
 
 
 export const Message = ({message}) => {
+  // usng the mui styles created
   const classes = useStyles()
   return (
     <Box
@@ -56,6 +60,7 @@ export const Message = ({message}) => {
                 variant="span"
                 color="textSecondary"
             >
+                {/* converting the firebase server date to a printable string objectt */}
                 {new Date(message.timeStamp?.toDate()).toUTCString()}
 
             </Typography>
