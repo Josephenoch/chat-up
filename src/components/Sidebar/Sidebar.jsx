@@ -24,7 +24,10 @@ export const Sidebar = () => {
   const {mainUser} = useAuth()
   const {contacts} = useAuth()
   const classes = useStyles()
-  const [normalContact, setNormalContact] = useState(true)
+  const [normalContact, setNormalContact] = useState(false)
+  const [searchText, setSearchText] = useState("")
+  const cntcts = searchText==="" ? contacts : contacts.filter(cnt=>cnt.data.sender.includes(searchText))
+  console.log(cntcts)
   return (
     <>
     <Box className="sideBar">
@@ -33,7 +36,13 @@ export const Sidebar = () => {
             user={mainUser}
             mainUser={true}
           />
-          <SidebarSearch/>
+          <SidebarSearch
+            setSearchText={setSearchText}
+            searchText={searchText}
+            setNormalContact={setNormalContact}
+            normalContact={normalContact}
+
+          />
           <SidebarSwitch
             normalContact={normalContact}
             setNormalContact={setNormalContact}
@@ -48,7 +57,7 @@ export const Sidebar = () => {
                 />
               )
             :
-              contacts.map(contact =>
+              cntcts.map(contact =>
                 !contact.data.blocked&&<Contact
                   key={contact.id}
                   id={contact.id}

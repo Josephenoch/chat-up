@@ -29,7 +29,13 @@ const useStyles = makeStyles({
     }
 })
 
-export const SidebarSearch = () => {
+export const SidebarSearch = ({searchText, setSearchText, setNormalContact, normalContact}) => {
+  const handleChange = (e)=>{
+      if(!normalContact){
+        setNormalContact(true)
+      }
+      setSearchText(e.target.value)
+  }
   const classes = useStyles()
   return (
     <Box
@@ -47,7 +53,9 @@ export const SidebarSearch = () => {
             />
             <input 
                 placeholder="Search or start a new chat"
-                className={classes.inputStyle}       
+                className={classes.inputStyle}
+                value={searchText}
+                onChange = {(e)=>handleChange(e)}    
             />
         </Box>
     </Box>
