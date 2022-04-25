@@ -1,11 +1,18 @@
+// react imports
 import React from 'react'
 
-import{Box, Paper} from "@mui/material"
+// mui imports
+import{Box} from "@mui/material"
 import {makeStyles} from "@mui/styles"
+
+// image imports
 import img from "../../assets/unopenedMessage.svg"
 
+// css styles import
 import "./chats.css"
+
 const useStyles = makeStyles({
+    // styles 
     root:{
         height:"100%",
         width:"70vw",
@@ -27,6 +34,7 @@ const useStyles = makeStyles({
 })
 
 export const NoActiveChat = () => {
+  //using mui styles
   const classes = useStyles()
   return (
     <Box className="chats">

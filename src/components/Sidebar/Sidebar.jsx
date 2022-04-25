@@ -26,7 +26,7 @@ export const Sidebar = () => {
   const classes = useStyles()
   const [normalContact, setNormalContact] = useState(false)
   const [searchText, setSearchText] = useState("")
-  const cntcts = searchText==="" ? contacts : contacts.filter(cnt=>cnt.data.sender.includes(searchText))
+  const cntcts =  contacts.filter(cnt=>cnt.data.sender.includes(searchText))
   console.log(cntcts)
   return (
     <>

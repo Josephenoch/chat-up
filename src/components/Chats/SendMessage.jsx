@@ -1,14 +1,22 @@
+// react imports
 import React,{useState} from 'react'
 
-
+// mui imports
 import {Box, IconButton} from "@mui/material"
 import { EmojiEmotionsOutlined } from '@mui/icons-material'
 import { makeStyles } from '@mui/styles'
+
+// component import
 import { Emoji } from '../Emoji'
+
+// firebase import
 import {serverTimestamp } from "firebase/firestore";
+
+// context imports
 import { useControls } from '../../contexts/ControlsContext'
 
 const useStyles = makeStyles({
+    // styles
     root:{
         width:"100%",
         padding: "0 0.75rem",
@@ -36,18 +44,29 @@ const useStyles = makeStyles({
 })
 
 export const SendMessage = ({contact}) => {
+  // mui styles  
+  const classes = useStyles() 
+
+  // state variables   
   const [message, setMessage] = useState("")
   const [anchorEl, setAnchorEl] = useState(null)
-
   const [modal, setModal] = useState(false)
+
+  // sendMessage from controls context  
   const {sendMessage} = useControls()
-  const classes = useStyles() 
+
+  // handle the emoji modal   
   const handleModal = (e) => {
     setAnchorEl(e.currentTarget)
     setModal(!modal)
   }
+
+  // handleSendMessage   
   const handleSendMessage = (e) =>{
+      // stop the page from refreshing   
       e.preventDefault()
+
+      // create the message object that will be sent to the server, using firebase serverTimeStamp so that the time is uniform
       const msg = {
           content:message,
           sentByMainUser:true,

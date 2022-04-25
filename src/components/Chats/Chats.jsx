@@ -76,6 +76,7 @@ export const Chats = () => {
   useEffect(()=>{
     const fetchData = async () =>{
         try{
+            // using try with an async fetch function to get the contacts messages
             const q = query(collection(db,`user/${mainUser.email}/contacts/${roomId}/messages`), orderBy("timeStamp"))
             await onSnapshot(q,snapShot=>{
                 const array1 = snapShot.docs.map(data=>({
@@ -88,6 +89,7 @@ export const Chats = () => {
                 setLoading(false)
             })
             await onSnapshot(doc(db,"user",contact.data.sender),user=>{
+                // using if and else to check the if the contact is online or their last seen
                 if(user.data().lastSeen==="online"){
                     setLastSeen(user.data().lastSeen)
                 }
@@ -96,6 +98,7 @@ export const Chats = () => {
                 }
             })
         }catch(err){
+            // getting the error in the case of an error
             setError(err.code)
         }
     }
@@ -105,8 +108,10 @@ export const Chats = () => {
  
   useEffect(()=>{
     if(contact && !contact.data.blocked){
+        // making the chat scroll to the bottom on change of url
         endDiv.current.scrollIntoView()
         if(contact.data.unReadMessages>0){
+            // changing the unread messages from whatsoever number to zero
             updateDoc(doc(db, `user/${mainUser.email}/contacts/${roomId}`),{
                 unReadMessages:0
             })
@@ -115,8 +120,10 @@ export const Chats = () => {
   },[roomId])
   useEffect(()=>{
     if(contact && !contact.data.blocked){
+        // making the chat scroll to the bottom on change of url
         endDiv.current.scrollIntoView()
         if(contact.data.unReadMessages>0){
+            // changing the unread messages from whatsoever number to zero
             updateDoc(doc(db, `user/${mainUser.email}/contacts/${roomId}`),{
                 unReadMessages:0
             })
@@ -126,8 +133,10 @@ export const Chats = () => {
   
 
   if(contact && !contact.data.blocked){
+
         return (
-        <>
+        // render the chat component if there is a contact with the roomID and if the contact isn't blocked
+        <>  
             <Box className="chats">
                 <Box
                     className={classes.root}
@@ -142,7 +151,9 @@ export const Chats = () => {
                     <Box
                         className={classes.messageBox}
                     >
-                        {loading?
+                        {
+                        // using conditional rendering to render a loading screen when trying to get messages
+                        loading?
                             <CircleSpinner size={18} color="#686769" loading={loading} />
                             :
                             messages.map((message) =>
@@ -177,6 +188,7 @@ export const Chats = () => {
         )
     }
     else{
+        // render the noactive chat component if either fails
         return <NoActiveChat/>
     }
 }
