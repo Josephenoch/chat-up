@@ -72,9 +72,13 @@ export const SendMessage = ({contact}) => {
           sentByMainUser:true,
           timeStamp: serverTimestamp()
       }
+      
+      // sending the message using the function from the controls context if the message is not empty
       if(message!==""){
           sendMessage(msg, contact)
       }
+
+      // change the message state variable to an empty message
       setMessage("")
   }
 
@@ -92,6 +96,7 @@ export const SendMessage = ({contact}) => {
                 }}
             />
         </IconButton>
+        {/* the emoji component */}
         <Emoji
             modal={modal}
             handleModal={handleModal}

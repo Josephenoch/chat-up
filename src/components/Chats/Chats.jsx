@@ -51,25 +51,25 @@ const useStyles = makeStyles({
 })
 
 export const Chats = () => {
-//   using mui styles
+  // using mui styles
   const classes = useStyles()
 
-//   using the contacts array and mainUser object using the object destructing from the Auth context
+  // creating the contacts array and mainUser object using the object destructing from the Auth context
   const { contacts, mainUser } = useAuth()
 
-//   using the roomID parameter passed with the url from react-router-dom
+  // creating the roomID parameter passed with the url from react-router-dom
   const {roomId} = useParams()
-
-//   state variables
+  
+  // state variables
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [messages, setMessages] = useState()
   const [lastSeen, setLastSeen] = useState()
-
-//   ref variables
+  
+  // ref variables
   const endDiv = useRef(null)
 
-//   getting the particular contact from the contacts array using the roomId params
+  // getting the particular contact from the contacts array using the roomId params
   const contact = contacts.filter(contact => contact.id===roomId)[0]
 
 

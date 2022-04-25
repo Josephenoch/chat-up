@@ -1,13 +1,19 @@
+// react imports
 import React from 'react'
 
+// mui imports
 import { Button, Typography, Box } from '@mui/material'
 import { makeStyles, useTheme} from '@mui/styles'
 
+// react-router-dom imports
 import { Link } from 'react-router-dom'
 
 export const LandingLeft = () => {
+  // making use of the useTheme context provided by mui
   const theme = useTheme()
+
   const useStyles = makeStyles({
+    // styles
     title:{
         width:"50%"
     },
@@ -29,7 +35,9 @@ export const LandingLeft = () => {
 
     }
   })
-    const classes = useStyles()
+
+  // make use of mui styles
+  const classes = useStyles()
   return (
     <>
         <Typography
@@ -62,6 +70,7 @@ export const LandingLeft = () => {
         <Box
             className={classes.circleContainer}
         >
+            {/* the small circles with different opacity under the get started button */}
             <Box
                 className={classes.circle}
                 sx={{

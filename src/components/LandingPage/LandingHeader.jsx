@@ -1,13 +1,16 @@
+// react imports
 import React from 'react'
 
+// mui imports
 import { Typography, Box, Button } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { useTheme} from '@mui/styles'
 
-import { Link } from 'react-router-dom'
-
 export const LandingHeader = () => {
+    // maing use of the useTheme context provided by mui
     const theme = useTheme()
+
+    // styles
     const useStyles = makeStyles({
         linkContainer:{
             position:"absolute",
@@ -20,9 +23,12 @@ export const LandingHeader = () => {
             fontSize:"1.2rem"
         }
     })
+
+    // use mui styles
     const classes = useStyles()
   return (
     <>
+        {/* placeholder for the logo */}
         <Typography variant="h5" color={theme.palette.primary.main}>
             Chat<sup>up</sup>
         </Typography>
@@ -33,8 +39,8 @@ export const LandingHeader = () => {
                 <a 
                     href="https://github.com/josephenoch" 
                     target="_blank"
-                        className={classes.links}
-                        rel="noreferrer"
+                    className={classes.links}
+                    rel="noreferrer"
                 >
                     <Button variant="contained">About</Button>
                 </a>
