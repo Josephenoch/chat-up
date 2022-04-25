@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 // mui imports
 import { makeStyles } from '@mui/styles'
-import { Alert, Box, Button, FormGroup, Paper, Typography } from '@mui/material'
+import { Alert, Box, Button, FormGroup, Paper, Typography, Snackbar, } from '@mui/material'
 
 // context imports
 import {useAuth} from "../../contexts/AuthContext"
@@ -38,45 +38,56 @@ const useStyles = makeStyles({
 })
 
 export const SignIn = () => {
-  const { signIn, loading, disabled } = useAuth()
-  const [error, setError] = useState(null)
-  const handleSignIn = async () =>{
-      setError(await signIn())
-  }
+  const { signIn, loading, disabled, error, setError } = useAuth()
   const classes = useStyles()
   return (
-    // the container for all children of this components  
-    <Box
-        className={classes.root}
-        style={{
-            background:loading&&"white !important"
-        }}
-    >
-        
-        {
-        // using a tenary to make the app show as loading when the user is yet to be authenticated or after they are authenticated
-            loading
-            ?
-            <CircleSpinner size={30} color="#686769" loading={loading} />
-            :
-            <Paper 
-                className={classes.formContainer}
-            > 
-                <Typography
-                    variant="h3"
-                    sx={{marginTop:"30px"}}
-                >
-                    Sign In
-                </Typography>
-            <FormGroup className={classes.formGroup}>
-                {/* using the signin function and disabled state variable from the auth context */}
-                <Button disabled={disabled} onClick={handleSignIn} variant="contained">Sign In with Google</Button>
-                {/* display an error alert if there's an error */}
-                {error &&<Alert severity='error' sx={{marginTop:"20px"}}>{error}</Alert>}
+    <> 
 
-            </FormGroup>
-            </Paper>
-        }
-    </Box>
+        {/* the container for all children of this component  */}
+        <Box
+            className={classes.root}
+            style={{
+                background:loading&&"white !important"
+            }}
+        >
+            
+            {
+            // using a tenary to make the app show as loading when the user is yet to be authenticated or after they are authenticated
+                loading
+                ?
+                <CircleSpinner size={30} color="#686769" loading={loading} />
+                :
+                <Paper 
+                    className={classes.formContainer}
+                > 
+                    <Typography
+                        variant="h3"
+                        sx={{marginTop:"30px"}}
+                    >
+                        Sign In
+                    </Typography>
+                <FormGroup className={classes.formGroup}>
+                    {/* using the signin function and disabled state variable from the auth context */}
+                    <Button disabled={disabled} onClick={signIn} variant="contained">Sign In with Google</Button>
+                    {/* display an error alert if there's an error */}
+                    
+                    
+                    
+
+                </FormGroup>
+                </Paper>
+            }
+        </Box>
+        <Snackbar
+            open={error}
+            autoHideDuration={5000}
+            onClose={() => setError(null)}
+        >
+            {error&&<Alert  severity="error"sx={{ width: '100%' }}>
+                {error}
+            </Alert>}
+        </Snackbar>
+    </>
+
   )
 }
