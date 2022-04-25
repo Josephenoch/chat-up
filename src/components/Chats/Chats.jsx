@@ -82,17 +82,21 @@ export const Chats = () => {
   useEffect(()=>{
     if(contact && !contact.data.blocked){
         endDiv.current.scrollIntoView()
-        updateDoc(doc(db, `user/${mainUser.email}/contacts/${roomId}`),{
-            unReadMessages:0
-        })
+        if(contact.data.unReadMessages>0){
+            updateDoc(doc(db, `user/${mainUser.email}/contacts/${roomId}`),{
+                unReadMessages:0
+            })
+        }
     }
   },[roomId])
   useEffect(()=>{
     if(contact && !contact.data.blocked){
         endDiv.current.scrollIntoView()
-        updateDoc(doc(db, `user/${mainUser.email}/contacts/${roomId}`),{
-            unReadMessages:0
-        })
+        if(contact.data.unReadMessages>0){
+            updateDoc(doc(db, `user/${mainUser.email}/contacts/${roomId}`),{
+                unReadMessages:0
+            })
+        }
     }
   })
   
