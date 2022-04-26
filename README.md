@@ -151,7 +151,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 <!-- CONTACT -->
 ## Contact
 
-Twitter - [@EnochJoseph01](https://twitter.com/enochjoseph01)
+Twitter - [@EnochJoseph01](https://twitter.com/enochjoseph01)<br>
 LinkedIn - [Joseph Enoch](https://www.linkedin.com/in/joseph-enoch/)
 
 Project Link: [https://chat-up-chi.vercel.app](Chat-up)
