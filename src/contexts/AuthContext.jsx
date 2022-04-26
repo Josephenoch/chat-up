@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react'
 
 import { createContext, useContext} from 'react'
-import { doc, getDoc, setDoc, collection, addDoc,  serverTimestamp, onSnapshot, orderBy} from "firebase/firestore"; 
+import { doc, getDoc, setDoc, collection, addDoc,  serverTimestamp, query, onSnapshot, orderBy} from "firebase/firestore"; 
 
 import { auth, provider, } from '../firebase-config';
 import { browserLocalPersistence, setPersistence, signInWithPopup, onAuthStateChanged, signOut} from "firebase/auth"
@@ -62,7 +62,8 @@ export const AuthProvider = ({children}) => {
               await setDoc(doc(db, "user",user.email),{
                 lastSeen:"online"
               })
-              await onSnapshot((collection(db, `user/${user.email}/contacts`)), orderBy("timeStamp"),cntcts =>{
+              const q =query(collection(db, `user/${user.email}/contacts`), orderBy("timeStamp", "desc"))
+              await onSnapshot(q,cntcts =>{
                 setContacts(cntcts.docs.map(cnt => ({id:cnt.id, data:cnt.data()})))
               })
               await onSnapshot((collection(db, `user/${user.email}/receivedInvites`)),invites=>{
