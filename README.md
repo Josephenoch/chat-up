@@ -74,6 +74,9 @@ A realtime messaging app with react and firebase.
 
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [React](https://reactjs.org)
+* [Firebase](https://firebase.google.com/)
+* [Material-ui](https://mui.com/)
+  
 
 
 
@@ -148,7 +151,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 <!-- CONTACT -->
 ## Contact
 
-Joseph Enoch - [@EnochJoseph01](https://twitter.com/enochjoseph01) - enochjoseph01@gmail.com
+Twitter - [@EnochJoseph01](https://twitter.com/enochjoseph01)
+LinkedIn - [Joseph Enoch](https://www.linkedin.com/in/joseph-enoch/)
 
-Project Link: [https://github.com/Josephenoch/chat-up]( https://github.com/Josephenoch/chat-up)
+Project Link: [https://chat-up-chi.vercel.app](Chat-up)
 
