@@ -9,7 +9,7 @@ import {Contact } from './Contact';
 
 import { Outlet} from "react-router-dom";
 import "./sidebar.css"
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../Contexts/AuthContext";
 import { useState } from "react";
 import { SidebarSwitch } from "./SidebarSwitch";
 const useStyles = makeStyles({

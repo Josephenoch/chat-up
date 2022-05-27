@@ -6,8 +6,8 @@ import { makeStyles } from '@mui/styles'
 import { Modal, Typography, Paper, TextField, Button, FormGroup, Snackbar, Alert } from '@mui/material'
 
 // context imports
-import { useControls } from '../../contexts/ControlsContext'
-import { useAuth } from '../../contexts/AuthContext'
+import { useControls } from '../../Contexts/ControlsContext'
+import { useAuth } from '../../Contexts/AuthContext'
 
 const useStyles = makeStyles({
   // styles

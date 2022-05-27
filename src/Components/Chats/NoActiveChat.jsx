@@ -6,7 +6,7 @@ import{Box} from "@mui/material"
 import {makeStyles} from "@mui/styles"
 
 // image imports
-import img from "../../assets/unopenedMessage.svg"
+import img from "../../Assets/unopenedMessage.svg"
 
 // css styles import
 import "./chats.css"

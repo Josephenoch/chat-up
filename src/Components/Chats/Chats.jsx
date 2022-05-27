@@ -15,7 +15,7 @@ import { NoActiveChat } from "./NoActiveChat"
 import "./chats.css"
 
 // contexts import
-import { useAuth } from "../../contexts/AuthContext"
+import { useAuth } from "../../Contexts/AuthContext"
 
 // firebase and firebase config file import
 import { onSnapshot,collection,query, orderBy, doc, updateDoc,} from "firebase/firestore"

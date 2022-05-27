@@ -13,7 +13,7 @@ import { Emoji } from '../Emoji'
 import {serverTimestamp } from "firebase/firestore";
 
 // context imports
-import { useControls } from '../../contexts/ControlsContext'
+import { useControls } from '../../Contexts/ControlsContext'
 
 const useStyles = makeStyles({
     // styles

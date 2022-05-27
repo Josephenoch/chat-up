@@ -6,7 +6,7 @@ import { Box } from '@mui/material'
 import { useTheme} from '@mui/styles'
 
 // image imports
-import LandingSvg from "../../assets/landingPage.svg"
+import LandingSvg from "../../Assets/landingPage.svg"
 
 export const LandingRight = () => {
   // making use of the useTheme context provided by mui

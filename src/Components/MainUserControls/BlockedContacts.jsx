@@ -3,11 +3,11 @@ import React,{useState} from 'react'
 import {Modal, Box, Paper, Typography, Avatar, Button, IconButton, Snackbar, Alert} from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { CancelOutlined } from '@mui/icons-material'
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from '../../Contexts/AuthContext'
+import { useControls } from '../../Contexts/ControlsContext'
 
-import notFound from "../../assets/notFound.svg"
-import { useControls } from '../../contexts/ControlsContext'
 
+import notFound from "../../Assets/notFound.svg"
 
 const useStyles = makeStyles({
   modalContainer:{
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     flexDirection:"column",
     transform: "translate(-50%, -50%)"
   },
-  inviteBox:{
+  blockedBox:{
     width:"100%",
     display:"flex", 
     padding:"10px",
@@ -35,53 +35,53 @@ const useStyles = makeStyles({
 }
 })
 
-export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
+export const BlockedContacts = ({blockedContactsModal, handleBlockedContactsModal}) => {
+  const {contacts} = useAuth()
+  const {unblockContact, deleteContact} = useControls()
+  const blockedContacts = contacts.filter(contact => contact.data.blocked === true)
   const [status, setStatus] = useState(null)
-  const {acceptInvite,rejectInvite} = useControls()
-  const {receivedInvites} = useAuth()
   const classes = useStyles()
-  const handleAccept = async (data,id) =>{
-    const message = await acceptInvite(data,id)
-    setStatus(message)
+  const handleUnblock = async (id) =>{
+    const stat = await unblockContact(id)
+    setStatus(stat)
   }
-  const handleReject = async (data,id) =>{
-    const message = await rejectInvite(data,id)
-    setStatus(message)
+  const handleDelete =  async (email,id) => {
+    await deleteContact(email,id)
   }
-  const userInvites = 
-    receivedInvites.map(invite=>
-      <Box 
-        className={classes.inviteBox}
-        key={invite.id}
-      >
-        <Avatar src={invite.data.photoURL}/>
+  const Blocked = 
+    blockedContacts.map(contact=>
+        <Box 
+        className={classes.blockedBox}
+        key={contact.id}
+        >
+        <Avatar src={contact.data.photoURL}/>
         <Box sx={{ marginLeft:"10px", width:"60%" }}>
-            <Typography variant="body2" color="primary">{invite.data.sender.toLowerCase()}</Typography>
-            <Typography variant="caption" color="textSecondary">{invite.data.displayName}</Typography>
+            <Typography variant="body2" color="primary">{contact.data.sender.toLowerCase()}</Typography>
+            <Typography variant="caption" color="textSecondary">{contact.data.displayName}</Typography>
         </Box>
         <Button 
             variant="contained" 
             size="small" 
             sx={{marginRight:"10px"}}
-            onClick={()=>handleAccept(invite.data,invite.id)}
+            onClick={()=>handleUnblock(contact.id)}
         >
-            Accept
+            UnBlock
         </Button>
         <Button 
             color="secondary" 
             size="small" 
             variant="outlined"
-            onClick={()=>handleReject(invite.data,invite.id)}
+            onClick={()=>handleDelete(contact.data.sender,contact.id)}
         >
-            Reject
+            Delete
         </Button>
-      </Box>
+        </Box>
     )
   return (
     <>
       <Modal
-          open={inviteModal}
-          onClose={handleInviteModal}
+          open={blockedContactsModal}
+          onClose={handleBlockedContactsModal}
       >
           <Paper
           className={classes.modalContainer}
@@ -92,25 +92,23 @@ export const UserInvitesModal = ({inviteModal, handleInviteModal}) => {
                 right:"10px",
                 position:"absolute"
               }}
-              onClick={handleInviteModal}
+              onClick={handleBlockedContactsModal}
             >
               <CancelOutlined/>
             </IconButton>
             <Typography variant="h5" sx={{marginBottom:"20px"}}>
-                Review Invites
+                Review Blocked Contacts
             </Typography>
-
-
+            
             {
-              receivedInvites.length>0
+              blockedContacts.length>0
                 ?
-                  userInvites:
+                  Blocked:
                 <>
-                  <img src={notFound} style={{width:"200px", marginBottom:"30px"}} alt="Not found" />
-                  <Typography variant="caption"> No New Invite</Typography>
+                  <img src={notFound} style={{width:"200px", marginBottom:"30px"}} alt="Not Found"/>
+                  <Typography variant="caption"> No Blocked Contacts</Typography>
                 </>
             }  
-            
           </Paper>
       </Modal>
       <Snackbar

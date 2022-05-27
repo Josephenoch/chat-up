@@ -3,7 +3,7 @@ import {Menu, MenuItem} from '@mui/material'
 import { DeleteModal } from './DeleteModal';
 import { BlockModal } from './BlockModal';
 
-import { useControls } from '../../contexts/ControlsContext';
+import { useControls } from '../../Contexts/ControlsContext';
 
 export const OtherUserMenu = ({menu,closeMenu,anchorEl,contactId,email}) => {
   const [deleteModal, setDeleteModal] = useState(false)

@@ -1,18 +1,18 @@
 import { Box } from "@mui/material";
 import "./App.css"
 
-import { Sidebar } from "./components/Sidebar/Sidebar";
-import { Chats } from "./components/Chats/Chats";
-import { ControlsProvider } from "./contexts/ControlsContext";
+import { Sidebar } from "./Components/Sidebar/Sidebar";
+import { Chats } from "./Components/Chats/Chats";
+import { ControlsProvider } from "./Contexts/ControlsContext";
 
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider,createTheme  } from "@mui/material/styles";
-import { NoActiveChat } from "./components/Chats/NoActiveChat";
-import { SignIn } from "./components/AuthPages/SignIn";
-import { AuthProvider } from "./contexts/AuthContext";
+import { NoActiveChat } from "./Components/Chats/NoActiveChat";
+import { SignIn } from "./Components/AuthPages/SignIn";
+import { AuthProvider } from "./Contexts/AuthContext";
 import { ProtectedRoute } from "./Routes/ProtectedRoute";
 import { PublicRoute } from "./Routes/PublicRoute";
-import { LandingPage } from "./components/LandingPage/LandingPage";
+import { LandingPage } from "./Components/LandingPage/LandingPage";
 
 
 const theme = createTheme({

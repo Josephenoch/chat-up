@@ -8,7 +8,7 @@ import {MainUserMenu} from "./MainUserControls/MainUserMenu"
 import {OtherUserMenu} from "./OtherUserControls/OtherUserMenu"
 
 import { AddContact } from './MainUserControls/AddContact'
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../Contexts/AuthContext'
 
 
 const useStyles = makeStyles({

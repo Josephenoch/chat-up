@@ -6,7 +6,7 @@ import { makeStyles } from '@mui/styles'
 import { Alert, Box, Button, FormGroup, Paper, Typography, Snackbar, } from '@mui/material'
 
 // context imports
-import {useAuth} from "../../contexts/AuthContext"
+import {useAuth} from "../../Contexts/AuthContext"
 
 // react-spinners-kit imports
 import { CircleSpinner } from "react-spinners-kit";

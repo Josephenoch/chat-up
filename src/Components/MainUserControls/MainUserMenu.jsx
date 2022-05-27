@@ -3,7 +3,7 @@ import React,{useState} from 'react'
 import {Menu, MenuItem} from '@mui/material'
 import { UserInvitesModal } from './UserInvitesModal'
 import { BlockedContacts } from './BlockedContacts'
-import { useAuth } from '../../contexts/AuthContext'
+import { useAuth } from '../../Contexts/AuthContext'
 
 export const MainUserMenu = ({menu,closeMenu,anchorEl}) => {
   const [inviteModal, setInviteModal] = useState(false)

@@ -9,7 +9,7 @@ import { useTheme } from '@mui/styles';
 
 import { onSnapshot,collection, query, orderBy } from "firebase/firestore"
 import { db } from "../../firebase-config"
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../Contexts/AuthContext';
 
 import { CircleSpinner } from "react-spinners-kit";
 
